@@ -7,6 +7,15 @@
       <v-spacer></v-spacer>
       <v-flex sm2
               text-xs-right>
+        <v-text-field v-model="keywords"
+                      label="输入手机号或名字查找"
+                      single-line
+                      hide-details
+                      append-icon="search"
+                      @keyup.enter="getMemberList"></v-text-field>
+      </v-flex>
+      <v-flex sm2
+              text-xs-right>
         <v-btn small
                fab
                dark
@@ -24,7 +33,7 @@
                   hide-actions
                   class="elevation-0">
       <template v-slot:items="props">
-        <td class="text-xs-center">
+        <!-- <td class="text-xs-center">
           <template>
             <v-avatar size="45px"
                       class="grey lighten-4">
@@ -34,7 +43,7 @@
                    src="../assets/moren.png" />
             </v-avatar>
           </template>
-        </td>
+        </td> -->
         <td class="text-xs-center">
           <template>
             <div>
@@ -45,7 +54,7 @@
         <td class="text-xs-center">
           <template>
             <div>
-              {{ props.item.certificate }}
+              {{ getID(props.item.certificate) }}
             </div>
           </template>
         </td>
@@ -77,8 +86,8 @@
               </div>
             </template>
           </td> -->
-        <td class="text-xs-center">{{ props.item.mobile }}</td>
-        <td class="text-xs-center">{{ props.item.address ? props.item.address : '--' }}</td>
+        <td class="text-xs-center">{{ getMobile(props.item.mobile) }}</td>
+        <!-- <td class="text-xs-center">{{ props.item.address ? props.item.address : '--' }}</td> -->
         <!-- <td class="text-xs-center">{{ props.item.nickname }}</td> -->
         <td>
           <template>
@@ -119,9 +128,26 @@
                   @click="deleteCurmember(props.item.id)">
             delete
           </v-icon>
+          <v-icon small
+                  title="密码重置"
+                  class="ml-2 mr-2"
+                  @click="resetPasswordCurmember(props.item.id)">
+            lock
+          </v-icon>
         </td>
       </template>
     </v-data-table>
+    <!-- 分页 -->
+    <v-layout row>
+      <v-flex xs3></v-flex>
+      <v-flex xs6
+              class="pageBar"
+              text-xs-center
+              v-show="showPagination">
+        <v-custompagination :pagination.sync="paginationMember"></v-custompagination>
+      </v-flex>
+      <v-flex xs3></v-flex>
+    </v-layout>
     <v-member-info-view :visible.sync="memberViewDialog"
                         :title="memberViewDialogTitle"
                         :memberid="curmemberid"></v-member-info-view>
@@ -150,7 +176,7 @@
 
 <script>
 import { excuteApis } from '@/api'
-import { parseTime } from '@/utils'
+import { parseTime, getIdInvisible, getMobileInvisible } from '@/utils'
 import VMemberInfoView from './member/MemberInfoView.vue'
 import VMemberAddOrEdit from './member/MemberAddOrEdit.vue'
 
@@ -162,12 +188,12 @@ export default {
       totalMembers: 0,
       loading: true,
       headers: [
-        {
-          text: '头像',
-          value: 'avatar',
-          align: 'center',
-          sortable: false
-        },
+        // {
+        //   text: '头像',
+        //   value: 'avatar',
+        //   align: 'center',
+        //   sortable: false
+        // },
         {
           text: '姓名',
           align: 'center',
@@ -195,7 +221,7 @@ export default {
         { text: '性别', value: 'gender', align: 'center', sortable: false },
         // { text: '生日', value: 'birthday', align: 'center', sortable: false },
         { text: '联系电话', value: 'mobile', align: 'center', sortable: false },
-        { text: '联系地址', value: 'address', align: 'center', sortable: false },
+        // { text: '联系地址', value: 'address', align: 'center', sortable: false },
         // { text: '昵称', value: 'nickname', align: 'center', sortable: false },
         { text: '注册时间', value: 'register_time', align: 'center', sortable: false },
         { text: '最近登录时间', value: 'last_login_time', align: 'center', sortable: false },
@@ -222,7 +248,14 @@ export default {
       curmemberid: null,
       curmember: null,
       addOrEditMemberDialog: 'IS_NONE',
-      addOrEditDialogTitle: ''
+      addOrEditDialogTitle: '',
+      showPagination: true,
+      paginationMember: {
+        total: 0,
+        page: 1, // page 当前页
+        rowsPerPage: 10
+      },
+      keywords: ''
     }
   },
   watch: {
@@ -233,21 +266,36 @@ export default {
     },
     addOrEditMemberDialog (val) {
       val === 'IS_NONE' ? this.getMemberList() : null
+    },
+    'paginationMember.rowsPerPage' () {
+      this.getMemberList()
     }
   },
   methods: {
     getMemberList () {
-      let requestParams = Object.assign({}, {})
+      let requestParams = Object.assign({}, {
+        page: this.paginationMember.page,
+        size: this.paginationMember.rowsPerPage,
+      })
+      if (this.keywords) {
+        Object.assign(requestParams, { mobile: this.keywords.trim(), name: this.keywords.trim() })
+      }
       try {
         excuteApis(requestParams, global.config.adminApis, 'user', 'list').then(response => {
-          let res = response.data
-          if (res.errno) {
-            window.console.log(res.errmsg)
-            this.loading = false
+          if (response.status === 200) {
+            let res = response.data
+            if (res.errno) {
+              window.console.log(res.errmsg)
+              this.loading = false
+            } else {
+              let result = res.data
+              this.members = result.data
+              this.loading = false
+              this.paginationMember.total = result.count
+            }
           } else {
-            let result = res.data
-            this.members = result.data
             this.loading = false
+            window.console.log(response.statusText)
           }
         })
       } catch (error) {
@@ -264,10 +312,10 @@ export default {
     getGenderName (index) {
       let res = null
       switch (index) {
-        case 1:
+        case 'MALE':
           res = '男'
           break
-        case 2:
+        case 'FEMALE':
           res = '女'
           break
         default:
@@ -304,6 +352,23 @@ export default {
         }
       }
     },
+    resetPasswordCurmember (id) {
+      if (id) {
+        let member = Object.assign({}, { id: id })
+        try {
+          excuteApis(member, global.config.adminApis, 'user', 'resetpassword').then(response => {
+            if (response.status === 200) {
+              let res = response.data
+              if (res.errno) {
+                window.console.log(res.errmsg)
+              }
+            }
+          })
+        } catch (error) {
+          window.console.log(error)
+        }
+      }
+    },
     showMemberDetail (id) {
       this.curmemberid = id
       this.memberViewDialog = true
@@ -311,6 +376,12 @@ export default {
     addMember () {
       this.addOrEditDialogTitle = '新建合伙人'
       this.addOrEditMemberDialog = 'IS_ADD'
+    },
+    getID (certificate) {
+      return getIdInvisible(certificate)
+    },
+    getMobile (mobile) {
+      return getMobileInvisible(mobile)
     }
   },
   created () {
@@ -337,5 +408,8 @@ export default {
   height: 52px;
   line-height: 52px;
   padding-left: 15px;
+}
+.pageBar {
+  padding-bottom: 15px;
 }
 </style>

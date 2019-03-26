@@ -1,6 +1,6 @@
-const baseUrl = 'https://hhr.dianjuhui.com:3393'
+// const baseUrl = 'https://hhr.dianjuhui.com:3393'
 // const baseUrl = 'http://localhost:8360'
-// const baseUrl = ''
+const baseUrl = ''
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
   url: baseUrl,
@@ -19,7 +19,8 @@ const config = {
       list: { url: '/index', method: 'post' },
       info: { url: '/info', method: 'get' },
       save: { url: '/store', method: 'post' },
-      delete: { url: '/destory', method: 'post' }
+      delete: { url: '/destory', method: 'post' },
+      resetpassword: { url: '/resetpassword', method: 'post' }
     }
   },
   level: {

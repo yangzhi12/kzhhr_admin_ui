@@ -33,14 +33,13 @@ function appendParams(requestParams, method) {
   let isNoNeed = keys.filter(key => {
     return key.indexOf('isNoNeed') === 0
   })
-  let params = null
+  let params = new URLSearchParams()
+  let curGetParams = extrasParams
+    ? Object.assign(isNoNeed.length > 0 ? {} : extrasParams, requestParams)
+    : requestParams
+  let pp = deleteKeyOfObject(curGetParams, 'isNoNeed')
   switch (METHOD[mod]) {
     case 1:
-      params = new URLSearchParams()
-      let curGetParams = extrasParams
-        ? Object.assign(isNoNeed.length > 0 ? {} : extrasParams, requestParams)
-        : requestParams
-      let pp = deleteKeyOfObject(curGetParams, 'isNoNeed')
       for (let p in pp) {
         params.append(p, pp[p])
       }

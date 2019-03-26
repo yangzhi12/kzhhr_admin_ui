@@ -481,6 +481,24 @@ function findSingleElement(desElement, srcElements) {
   return null
 }
 
+// 隐藏身份证号
+function getIdInvisible(id) {
+  if (id && id.length >= 18) {
+    return id.replace(/(\d{4})\d{10}(\d{4})/g, '$1**********$2')
+  } else {
+    return id
+  }
+}
+
+// 隐藏手机号吗
+function getMobileInvisible(mobile) {
+  if (mobile && mobile.length >= 11) {
+    return mobile.replace(/(\d{3})\d{4}(\d{4})/g, '$1****$2')
+  } else {
+    return mobile
+  }
+}
+
 export {
   isArray,
   hasKey,
@@ -501,5 +519,7 @@ export {
   enAreasCode,
   addDate,
   addHour,
-  findSingleElement
+  findSingleElement,
+  getIdInvisible,
+  getMobileInvisible
 }

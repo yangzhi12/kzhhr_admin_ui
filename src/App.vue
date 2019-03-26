@@ -21,7 +21,8 @@
                @click="path('report')">统计报表</v-btn>
         <v-menu open-on-hover
                 top
-                offset-y>
+                offset-y
+                v-if="!isLogin">
           <template v-slot:activator="{ on }">
             <v-btn small
                    flat
@@ -53,7 +54,20 @@ export default {
         { title: '个人中心' },
         { title: '用户管理' },
         { title: '退出系统' }
-      ]
+      ],
+      isLogin: false
+    }
+  },
+  watch: {
+    $route: {
+      handler: function (v) {
+        if (v.name === 'login') {
+          this.isLogin = true
+        } else {
+          this.isLogin = false
+        }
+      },
+      deep: true
     }
   },
   methods: {
@@ -65,7 +79,7 @@ export default {
         case 0: break;
         case 1: break;
         case 2:
-          this.$store.commit('setAuth', { user: {}, token: null })
+          this.$store.commit('setAuth', { user: {}, 'token': null })
           this.$router.push({ name: 'login' })
           break;
       }

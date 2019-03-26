@@ -31,8 +31,7 @@
                           item-text="name"
                           item-value="value"
                           label="请选择性别"
-                          no-data-text="无"
-                          :rules="rules.required">
+                          no-data-text="无">
                 </v-select>
               </v-flex>
             </v-layout>
@@ -131,6 +130,21 @@
         </v-card-actions>
       </template>
     </v-modaldialog>
+    <v-snackbar v-model="snackbar"
+                :bottom="y === 'bottom'"
+                :left="x === 'left'"
+                :right="x === 'right'"
+                :timeout="3000"
+                :top="y === 'top'"
+                color="primary"
+                :vertical="mode === 'vertical'">
+      {{ snackbarContent }}
+      <v-btn dark
+             flat
+             @click="snackbar = false">
+        关闭
+      </v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -191,23 +205,29 @@ export default {
         ],
         certificate: [
           (v) => !!v || '必填项',
-          (v) => validPersonID(v) || '身份证号输入有误'
+          (v) => v && validPersonID(v) || '身份证号输入有误'
         ]
       },
       sexs: [
         {
-          value: 0,
-          name: '--'
+          value: null,
+          name: ''
         },
         {
-          value: 1,
+          value: 'MALE',
           name: '男'
         },
         {
-          value: 2,
+          value: 'FEMALE',
           name: '女'
         }
-      ]
+      ],
+      snackbar: false,
+      y: 'top',
+      x: null,
+      mode: '',
+      timeout: 6000,
+      snackbarContent: ''
     }
   },
   computed: {},
@@ -231,12 +251,34 @@ export default {
             let date = new Date(this.birthday)
             this.member.setBirthday(date.getTime())
           }
-          this.member.edit().then(() => {
-            this.$emit('update:visible', 'IS_NONE')
+          this.member.edit().then((res) => {
+            if (res.status === 200) {
+              let response = res.data
+              if (!response.errno) {
+                this.$emit('update:visible', 'IS_NONE')
+              } else {
+                this.snackbar = true
+                this.snackbarContent = response.errmsg
+              }
+            } else {
+              this.snackbar = true
+              this.snackbarContent = res.statusText
+            }
           })
         } else {
-          this.member.add().then(() => {
-            this.$emit('update:visible', 'IS_NONE')
+          this.member.add().then((res) => {
+            if (res.status === 200) {
+              let response = res.data
+              if (!response.errno) {
+                this.$emit('update:visible', 'IS_NONE')
+              } else {
+                this.snackbar = true
+                this.snackbarContent = response.errmsg
+              }
+            } else {
+              this.snackbar = true
+              this.snackbarContent = res.statusText
+            }
           })
         }
       }
@@ -250,7 +292,8 @@ export default {
         this.member.setUsername(null)
         this.member.setGender(null)
         this.member.setMobile(null)
-        this.member.setBirthday(null)
+        this.member.setCertificate(null)
+        // this.member.setBirthday(null)
         this.member.setWeixin_no(null)
         this.member.setAddress(null)
         this.addOrEditTitle = '新建（注册）合伙人'

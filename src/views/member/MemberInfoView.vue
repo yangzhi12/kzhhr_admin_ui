@@ -17,18 +17,9 @@
             <span class="titleInner"> 基本信息 </span>
           </div>
           <div class="baseInfoContent">
-            <v-layout row>
-              <v-flex xs2
-                      text-xs-center>
-                <v-avatar size="45px"
-                          class="grey lighten-4">
-                  <img v-if="member.avatar"
-                       :src="member.avatar" />
-                  <img v-else
-                       src="../../assets/moren.png" />
-                </v-avatar>
-              </v-flex>
-              <v-flex xs11>
+            <v-layout row
+                      wrap>
+              <v-flex xs12>
                 <v-layout row
                           mb-2>
                   <v-flex xs4>
@@ -37,7 +28,7 @@
                   </v-flex>
                   <v-flex xs4>
                     <span class="infolabel">身份证号: </span>
-                    <span>{{ getFormtedTime(member.certificate) || '--' }}</span>
+                    <span>{{ member.certificate || '--' }}</span>
                   </v-flex>
                   <v-flex xs4>
                     <!-- <span class="infolabel">出生日期: </span>

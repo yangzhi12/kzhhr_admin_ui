@@ -83,10 +83,10 @@ export default {
     getGenderName(index) {
       let res = null
       switch (index) {
-        case 1:
+        case 'MALE':
           res = '男'
           break
-        case 2:
+        case 'FEMALE':
           res = '女'
           break
         default:

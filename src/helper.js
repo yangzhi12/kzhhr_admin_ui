@@ -31,13 +31,14 @@ helper.ls = {
  * a wrapper for helper.ls
  */
 helper.store = (key, value) => {
-  if (arguments.length < 2) {
+  if (window.arguments.length < 2) {
     return helper.ls.get(key)
   } else {
     return helper.ls.set(key, value)
   }
 }
 Vue.directive('back', (el, binding) => {
+  window.console.log(binding)
   el.onclick = () => window.history.go(-1)
 })
 

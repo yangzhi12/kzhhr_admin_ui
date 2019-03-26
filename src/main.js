@@ -26,6 +26,9 @@ Vue.component('v-form', VForm)
 import VCustomDatePicker from './components/common/CustomDatePicker.vue'
 Vue.component('v-customdatepicker', VCustomDatePicker)
 
+import VCustomPagination from './components/common/CustomPagination.vue'
+Vue.component('v-custompagination', VCustomPagination)
+
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {

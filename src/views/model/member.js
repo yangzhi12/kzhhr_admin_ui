@@ -180,7 +180,7 @@ CMember.prototype.getCertificate = function() {
   return this.certificate
 }
 
-CMember.prototype.setCerticate = function(certificate) {
+CMember.prototype.setCertificate = function(certificate) {
   this.certificate = certificate
 }
 
@@ -217,7 +217,7 @@ CMember.prototype.add = function() {
     Object.assign(member, { certificate: this.getCertificate() })
     Object.assign(member, { mobile: this.getMobile() })
     Object.assign(member, { gender: this.getGender() })
-    Object.assign(member, { birthday: this.getBirthday() })
+    // Object.assign(member, { birthday: this.getBirthday() })
     Object.assign(member, { weixin_no: this.getWeixin_no() })
     Object.assign(member, { address: this.getAddress() })
     return excuteApis(member, global.config.adminApis, 'user', 'save')
@@ -235,7 +235,7 @@ CMember.prototype.edit = function() {
     Object.assign(member, { certificate: this.getCertificate() })
     Object.assign(member, { mobile: this.getMobile() })
     Object.assign(member, { gender: this.getGender() })
-    Object.assign(member, { birthday: this.getBirthday() })
+    // Object.assign(member, { birthday: this.getBirthday() })
     Object.assign(member, { weixin_no: this.getWeixin_no() })
     Object.assign(member, { address: this.getAddress() })
     return excuteApis(member, global.config.adminApis, 'user', 'save')
