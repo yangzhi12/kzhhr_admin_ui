@@ -13,7 +13,7 @@
                 py-3
                 text-xs-center
                 grey--text>
-          昆明自动化成套设备股份有限公司&nbsp;&nbsp;&nbsp;&nbsp;@版权所有&nbsp;&nbsp;&nbsp;&nbsp;Ver0.1.0.190320
+          昆明自动化成套设备股份有限公司&nbsp;&nbsp;&nbsp;&nbsp;@版权所有&nbsp;&nbsp;&nbsp;&nbsp;Ver0.3.0.190405
         </v-flex>
       </v-layout>
     </v-footer>
