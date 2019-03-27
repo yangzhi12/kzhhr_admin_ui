@@ -31,6 +31,17 @@ Vue.component('v-custompagination', VCustomPagination)
 
 Vue.config.productionTip = false
 
+import VueTimeago from 'vue-timeago'
+
+Vue.use(VueTimeago, {
+  name: 'timeago', // component name, `timeago` by default
+  locale: config.locale,
+  locales: {
+    en: require('vue-timeago/locales/en-US.json'),
+    [config.locale]: require(`vue-timeago/locales/${config.locale}.json`)
+  }
+})
+
 router.beforeEach((to, from, next) => {
   if (to.matched.some(r => r.meta.requireAuth)) {
     if (store.state.token) {
@@ -43,17 +54,6 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next()
-  }
-})
-
-import VueTimeago from 'vue-timeago'
-
-Vue.use(VueTimeago, {
-  name: 'timeago', // component name, `timeago` by default
-  locale: config.locale,
-  locales: {
-    en: require('vue-timeago/locales/en-US.json'),
-    [config.locale]: require(`vue-timeago/locales/${config.locale}.json`)
   }
 })
 
