@@ -269,6 +269,9 @@ export default {
     },
     'paginationMember.rowsPerPage' () {
       this.getMemberList()
+    },
+    'paginationMember.page' () {
+      this.getMemberList()
     }
   },
   methods: {
