@@ -89,7 +89,7 @@ html {
     margin-left: 2.15rem;
   }
   .page-content {
-    // padding: 1.42rem;
+    padding: 1.42rem;
     background-color: #ffffff !important;
     margin-left: 0.5rem;
     margin-right: 0.5rem;
@@ -167,50 +167,5 @@ html {
   }
   .fc-toolbar.fc-header-toolbar {
     height: 250px;
-  }
-  [data-calendar-month] {
-    background-repeat: no-repeat;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    background-position: center;
-    transition: background-image 0.3s;
-  }
-  [data-calendar-month='0'] {
-    background-image: url('/static/plan/january.jpg');
-  }
-  [data-calendar-month='1'] {
-    background-image: url('/static/plan/february.jpg');
-  }
-  [data-calendar-month='2'] {
-    background-image: url('/static/plan/march.jpg');
-  }
-  [data-calendar-month='3'] {
-    background-image: url('/static/plan/april.jpg');
-  }
-  [data-calendar-month='4'] {
-    background-image: url('/static/plan/may.jpg');
-  }
-  [data-calendar-month='5'] {
-    background-image: url('/static/plan/june.jpg');
-  }
-  [data-calendar-month='6'] {
-    background-image: url('/static/plan/july.jpg');
-  }
-  [data-calendar-month='7'] {
-    background-image: url('/static/plan/august.jpg');
-  }
-  [data-calendar-month='8'] {
-    background-image: url('/static/plan/september.jpg');
-  }
-  [data-calendar-month='9'] {
-    background-image: url('/static/plan/october.jpg');
-  }
-  [data-calendar-month='10'] {
-    background-image: url('/static/plan/november.jpg');
-  }
-  [data-calendar-month='11'] {
-    background-image: url('/static/plan/december.jpg');
   }
 }

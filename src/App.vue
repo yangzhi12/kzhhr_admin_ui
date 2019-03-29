@@ -22,7 +22,7 @@
         <v-menu open-on-hover
                 top
                 offset-y
-                v-if="!isLogin">
+                v-if="isLogined">
           <template v-slot:activator="{ on }">
             <v-btn small
                    flat
@@ -55,16 +55,16 @@ export default {
         { title: '用户管理' },
         { title: '退出系统' }
       ],
-      isLogin: false
+      isLogined: false
     }
   },
   watch: {
     $route: {
       handler: function (v) {
         if (v.name === 'login') {
-          this.isLogin = true
+          this.isLogined = false
         } else {
-          this.isLogin = false
+          this.isLogined = true
         }
       },
       deep: true
@@ -76,7 +76,9 @@ export default {
     },
     triggerEvent (index) {
       switch (index) {
-        case 0: break;
+        case 0:
+          this.$router.push({ name: 'personal' })
+          break;
         case 1: break;
         case 2:
           this.$store.commit('setAuth', { user: {}, 'token': null })

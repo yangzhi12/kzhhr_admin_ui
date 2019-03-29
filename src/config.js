@@ -1,6 +1,6 @@
 // const baseUrl = 'https://hhr.dianjuhui.com:3393'
-// const baseUrl = 'http://localhost:8360'
-const baseUrl = ''
+const baseUrl = 'http://localhost:8360'
+// const baseUrl = ''
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
   url: baseUrl,
@@ -13,7 +13,8 @@ const config = {
   adminApis: {
     baseUrl: '/admin/',
     auth: {
-      login: { url: '/login', method: 'post' }
+      login: { url: '/login', method: 'post' },
+      modifypassword: { url: '/modifypassword', method: 'post' }
     },
     user: {
       list: { url: '/index', method: 'post' },
@@ -50,6 +51,13 @@ const config = {
     '50': '五钻未审核',
     '51': '五钻已审核',
     '52': '五钻未通过'
+  },
+  role: {
+    ADMIN: '超级管理员',
+    TECHNICAL: '技术组',
+    CONTRACT: '合同组',
+    LAW: '法务组',
+    FINANCE: '财务组'
   }
 }
 
