@@ -1,4 +1,4 @@
-# est
+# kzhhr_admin_ui
 
 ## Project setup
 ```
