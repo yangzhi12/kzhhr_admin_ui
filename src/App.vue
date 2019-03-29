@@ -79,7 +79,9 @@ export default {
         case 0:
           this.$router.push({ name: 'personal' })
           break;
-        case 1: break;
+        case 1:
+          this.$router.push({ name: 'auth' })
+          break;
         case 2:
           this.$store.commit('setAuth', { user: {}, 'token': null })
           this.$router.push({ name: 'login' })

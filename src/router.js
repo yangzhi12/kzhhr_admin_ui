@@ -74,6 +74,11 @@ export default new Router({
       path: '/personal',
       name: 'personal',
       component: () => import('./views/Personal.vue')
+    },
+    {
+      path: '/auth',
+      name: 'auth',
+      component: () => import('./views/Auth.vue')
     }
   ]
 })

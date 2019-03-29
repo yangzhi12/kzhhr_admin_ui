@@ -14,7 +14,18 @@ const config = {
     baseUrl: '/admin/',
     auth: {
       login: { url: '/login', method: 'post' },
-      modifypassword: { url: '/modifypassword', method: 'post' }
+      modifypassword: { url: '/modifypassword', method: 'post' },
+      list: { url: '/index', method: 'post' },
+      info: { url: '/info', method: 'get' },
+      save: { url: '/store', method: 'post' },
+      delete: { url: '/destory', method: 'post' },
+      resetpassword: { url: '/resetpassword', method: 'post' }
+    },
+    role: {
+      list: { url: '/index', method: 'post' },
+      info: { url: '/info', method: 'get' },
+      save: { url: '/store', method: 'post' },
+      delete: { url: '/destory', method: 'post' }
     },
     user: {
       list: { url: '/index', method: 'post' },
