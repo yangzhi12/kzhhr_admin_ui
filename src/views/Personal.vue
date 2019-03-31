@@ -1,5 +1,5 @@
 <template>
-  <v-card class="page-content">
+  <v-card class="page-content mt-2">
     <v-layout row>
       <v-flex sm12
               text-xs-left>

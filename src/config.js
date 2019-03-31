@@ -33,6 +33,9 @@ const config = {
       save: { url: '/store', method: 'post' },
       delete: { url: '/destory', method: 'post' },
       resetpassword: { url: '/resetpassword', method: 'post' }
+    },
+    contract: {
+      list: { url: '/index', method: 'post' }
     }
   },
   level: {

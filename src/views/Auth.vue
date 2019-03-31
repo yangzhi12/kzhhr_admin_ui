@@ -59,12 +59,12 @@
           </div>
         </td>
         <td class="justify-center layout px-0">
-          <v-icon small
+          <!-- <v-icon small
                   class="mr-2"
                   title="查看"
                   @click="showAuthDetail(props.item.id)">
             remove_red_eye
-          </v-icon>
+          </v-icon> -->
           <v-icon small
                   class="mr-2"
                   title="编辑"

@@ -197,6 +197,7 @@ export default {
     disposeDialog (v) {
       this.addOrEditDialog = this.addOrEdit[v]
       if (v === 'IS_ADD') {
+        this.auth.setId(null)
         this.auth.setUsername(null)
         this.auth.setMobile(null)
         this.auth.setRoleid(null)
