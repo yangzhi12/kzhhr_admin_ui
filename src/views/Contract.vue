@@ -47,7 +47,7 @@
             </div>
           </template>
         </td>
-        <td class="text-xs-center">{{ props.item.contractvalue }}</td>
+        <td class="text-xs-center">{{ getMoney(props.item.contractvalue) }}</td>
         <td class="text-xs-center">
           <div class="text-xs-center">
             {{ props.item.contractstart ? getFormtedTime(props.item.contractstart) : '-' }}
@@ -131,7 +131,7 @@
 
 <script>
 import { excuteApis } from '@/api'
-import { parseTime, getApproveFlow } from '@/utils'
+import { parseTime, getApproveFlow, getCommaMoney } from '@/utils'
 import VContractInfoView from './contract/ContractInfoView.vue'
 // import VAuthAddOrEdit from './auth/AuthAddOrEdit.vue'
 
@@ -273,6 +273,9 @@ export default {
     },
     getApproveFlowName (flowno) {
       return getApproveFlow(flowno)
+    },
+    getMoney (money) {
+      return getCommaMoney(money, false)
     }
   },
   created () {

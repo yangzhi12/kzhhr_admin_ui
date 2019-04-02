@@ -91,6 +91,7 @@ export function CContract(contract) {
       : null
   this.industry =
     contract && contract.hasOwnProperty('industry') ? contract.industry : null
+  this.plan = contract && contract.hasOwnProperty('plan') ? contract.plan : null
 }
 
 CContract.prototype.getId = function() {
@@ -307,4 +308,12 @@ CContract.prototype.getIndustry = function() {
 
 CContract.prototype.setIndustry = function(industry) {
   this.industry = industry
+}
+
+CContract.prototype.getPlan = function() {
+  return this.plan
+}
+
+CContract.prototype.setPlan = function(plan) {
+  this.plan = plan
 }

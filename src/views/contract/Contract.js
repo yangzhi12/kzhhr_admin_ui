@@ -1,5 +1,11 @@
 import { excuteApis } from '@/api'
-import { parseTime, getApproveFlow, getIndustry, getVoltage } from '@/utils'
+import {
+  parseTime,
+  getApproveFlow,
+  getIndustry,
+  getVoltage,
+  getCommaMoney
+} from '@/utils'
 import { CContract } from '../model/contract'
 export default {
   data() {
@@ -56,7 +62,7 @@ export default {
       if (!time) {
         return '--'
       }
-      return parseTime(new Date(Number(time)), 'yyyy-MM-dd')
+      return parseTime(time, 'yyyy-MM-dd')
     },
     assignContract(resContract) {
       if (resContract) {
@@ -177,6 +183,9 @@ export default {
         this.contract.setIndustry(
           resContract.hasOwnProperty('industry') ? resContract.industry : null
         )
+        this.contract.setPlan(
+          resContract.hasOwnProperty('plan') ? resContract.plan : null
+        )
       }
     },
     getApproveFlowName(flowno) {
@@ -187,6 +196,17 @@ export default {
     },
     getVoltageName(voltageno) {
       return getVoltage(voltageno)
+    },
+    getServiceSelected(plan) {
+      let plans = this.contract.getPlan()
+      if (plans) {
+        plans = plans.split(',')
+        return plans.includes(plan)
+      }
+      return false
+    },
+    getMoney(money) {
+      return getCommaMoney(money, false)
     }
   }
 }

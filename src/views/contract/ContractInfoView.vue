@@ -3,7 +3,7 @@
     <v-modaldialog :isShow.sync="contractViewDialog"
                    :title="contractViewTitle"
                    :modalMaxWidth="800"
-                   :bodyHeight="600"
+                   :bodyHeight="650"
                    :showCloseBtn="true">
       <div>
         <div class="baseInfo">
@@ -22,7 +22,7 @@
                   </v-flex>
                   <v-flex xs4>
                     <span class="infolabel">合同金额: </span>
-                    <span>{{ contract.contractvalue || '--' }} 元</span>
+                    <span>{{ getMoney(contract.contractvalue) || '--' }} 元</span>
                   </v-flex>
                   <v-flex xs4>
                     <span class="infolabel">签单人: </span>
@@ -82,28 +82,189 @@
         </div>
         <div class="baseInfo">
           <div class="baseInfoTitle">
-            <span class="titleInner"> 服务方案 </span>
+            <span class="titleInner"> 服务方案</span>
           </div>
           <div class="baseInfoContent">
-            <!-- <v-layout row
-                      wrap>
-              <v-flex xs12>
-                <v-layout row>
-                  <v-flex xs4>
-                    <span class="infolabel">所属行业: </span>
-                    <span>{{ contract.contractvalue || '--' }}</span>
-                  </v-flex>
-                  <v-flex xs4>
-                    <span class="infolabel">电压等级: </span>
-                    <span>{{ contract.contractname || '--' }}</span>
-                  </v-flex>
-                  <v-flex xs4>
-                    <span class="infolabel">变压器总容量: </span>
-                    <span>{{ contract.contractvalue || '--' }}</span>
-                  </v-flex>
-                </v-layout>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel">业务类别</span>
               </v-flex>
-            </v-layout> -->
+              <v-flex xs6>
+                <span class="infolabel">服务产品说明</span>
+              </v-flex>
+              <v-flex xs2>
+                <span class="infolabel">服务类别</span>
+              </v-flex>
+              <v-flex xs2
+                      text-xs-center>
+                <span class="infolabel">服务勾选</span>
+              </v-flex>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel">基础服务</span>
+              </v-flex>
+              <v-flex xs6>
+                <span class="infolabel">平台基础服务</span>
+              </v-flex>
+              <v-flex xs2>
+                <span class="infolabel">监测</span>
+              </v-flex>
+              <v-flex xs2
+                      text-xs-center>
+                <span class="infolabel">
+                  <v-icon v-if="getServiceSelected('0000000')"
+                          light
+                          color="green"
+                          small>check_circle</v-icon>
+                  <v-icon v-else
+                          light
+                          small>remove_circle</v-icon>
+                </span>
+              </v-flex>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel"></span>
+              </v-flex>
+              <v-flex xs6>
+                <span class="infolabel">配电室带电巡检</span>
+              </v-flex>
+              <v-flex xs2>
+                <span class="infolabel">巡检</span>
+              </v-flex>
+              <v-flex xs2
+                      text-xs-center>
+                <span class="infolabel">
+                  <v-icon v-if="getServiceSelected('1000000')"
+                          light
+                          color="green"
+                          small>check_circle</v-icon>
+                  <v-icon v-else
+                          light
+                          small>remove_circle</v-icon>
+                </span>
+              </v-flex>
+            </v-layout>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel"></span>
+              </v-flex>
+              <v-flex xs6>
+                <span class="infolabel">配电设施设备维保</span>
+              </v-flex>
+              <v-flex xs2>
+                <span class="infolabel">维保</span>
+              </v-flex>
+              <v-flex xs2
+                      text-xs-center>
+                <span class="infolabel">
+                  <v-icon v-if="getServiceSelected('1000100')"
+                          light
+                          color="green"
+                          small>check_circle</v-icon>
+                  <v-icon v-else
+                          light
+                          small>remove_circle</v-icon>
+                </span>
+              </v-flex>
+            </v-layout>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel">定制服务</span>
+              </v-flex>
+              <v-flex xs6>
+                <span class="infolabel">配电设备预防性试验</span>
+              </v-flex>
+              <v-flex xs2>
+                <span class="infolabel">试验</span>
+              </v-flex>
+              <v-flex xs2
+                      text-xs-center>
+                <span class="infolabel">
+                  <v-icon v-if="getServiceSelected('1000200')"
+                          light
+                          color="green"
+                          small>check_circle</v-icon>
+                  <v-icon v-else
+                          light
+                          small>remove_circle</v-icon>
+                </span>
+              </v-flex>
+            </v-layout>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel"></span>
+              </v-flex>
+              <v-flex xs6>
+                <span class="infolabel">配电设施设备应急抢修保障</span>
+              </v-flex>
+              <v-flex xs2>
+                <span class="infolabel">抢修</span>
+              </v-flex>
+              <v-flex xs2
+                      text-xs-center>
+                <span class="infolabel">
+                  <v-icon v-if="getServiceSelected('1000300')"
+                          light
+                          color="green"
+                          small>check_circle</v-icon>
+                  <v-icon v-else
+                          light
+                          small>remove_circle</v-icon>
+                </span>
+              </v-flex>
+            </v-layout>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel"></span>
+              </v-flex>
+              <v-flex xs6>
+                <span class="infolabel">能效管理</span>
+              </v-flex>
+              <v-flex xs2>
+                <span class="infolabel">节能</span>
+              </v-flex>
+              <v-flex xs2
+                      text-xs-center>
+                <span class="infolabel">
+                  <v-icon v-if="getServiceSelected('1000400')"
+                          light
+                          color="green"
+                          small>check_circle</v-icon>
+                  <v-icon v-else
+                          light
+                          small>remove_circle</v-icon>
+                </span>
+              </v-flex>
+            </v-layout>
+            <v-divider></v-divider>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel">托管服务</span>
+              </v-flex>
+              <v-flex xs6>
+                <span class="infolabel">包含平台基础服务、线下维护服务、应急抢修保障</span>
+              </v-flex>
+              <v-flex xs2>
+                <span class="infolabel">托管</span>
+              </v-flex>
+              <v-flex xs2
+                      text-xs-center>
+                <span class="infolabel">
+                  <v-icon v-if="getServiceSelected('2000000')"
+                          light
+                          color="green"
+                          small>check_circle</v-icon>
+                  <v-icon v-else
+                          light
+                          small>remove_circle</v-icon>
+                </span>
+              </v-flex>
+            </v-layout>
+            <v-divider></v-divider>
           </div>
         </div>
       </div>
@@ -207,5 +368,13 @@ export default {
 .infolabel {
   margin-right: 10px;
   /* color: #bbb7b7; */
+}
+.infoTitle {
+  line-height: 20px;
+  height: 20px;
+}
+.infolabel {
+  line-height: 30px;
+  height: 20px;
 }
 </style>
