@@ -35,7 +35,8 @@ const config = {
       resetpassword: { url: '/resetpassword', method: 'post' }
     },
     contract: {
-      list: { url: '/index', method: 'post' }
+      list: { url: '/index', method: 'post' },
+      info: { url: '/info', method: 'get' }
     }
   },
   level: {

@@ -68,7 +68,7 @@
         <td class="text-xs-center">
           <template>
             <div>
-              {{ props.item.contractstate }}
+              {{ getApproveFlowName(props.item.contractstate)['name'] || '--' }}
             </div>
           </template>
         </td>
@@ -105,10 +105,10 @@
       </v-flex>
       <v-flex xs3></v-flex>
     </v-layout>
-    <!-- <v-auth-info-view :visible.sync="authViewDialog"
-                      :title="contractViewDialogTitle"
-                      :authid="curcontractid"></v-auth-info-view>
-    <v-auth-add-or-edit :visible.sync="addOrEditContractDialog"
+    <v-contract-info-view :visible.sync="contractViewDialog"
+                          :title="contractViewDialogTitle"
+                          :contractid="curcontractid"></v-contract-info-view>
+    <!-- <v-auth-add-or-edit :visible.sync="addOrEditContractDialog"
                         :title="addOrEditDialogTitle"
                         :authid="curcontractid"></v-auth-add-or-edit> -->
     <v-snackbar v-model="snackbar"
@@ -131,8 +131,8 @@
 
 <script>
 import { excuteApis } from '@/api'
-import { parseTime } from '@/utils'
-// import VAuthInfoView from './auth/AuthInfoView.vue'
+import { parseTime, getApproveFlow } from '@/utils'
+import VContractInfoView from './contract/ContractInfoView.vue'
 // import VAuthAddOrEdit from './auth/AuthAddOrEdit.vue'
 
 export default {
@@ -270,10 +270,16 @@ export default {
     addContract () {
       this.addOrEditDialogTitle = '新建合同'
       this.addOrEditContractDialog = 'IS_ADD'
+    },
+    getApproveFlowName (flowno) {
+      return getApproveFlow(flowno)
     }
   },
   created () {
     this.getContractList()
+  },
+  components: {
+    VContractInfoView
   }
 }
 </script>

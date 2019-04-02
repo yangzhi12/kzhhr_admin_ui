@@ -481,10 +481,20 @@ function findSingleElement(desElement, srcElements) {
   return null
 }
 
+// 判断字符串中是否含字母
+function isHasLetter(id) {
+  let p = /[a-z]/i
+  return p.test(id)
+}
+
 // 隐藏身份证号
 function getIdInvisible(id) {
   if (id && id.length >= 18) {
-    return id.replace(/(\d{4})\d{10}(\d{4})/g, '$1**********$2')
+    if (isHasLetter(id)) {
+      return id.replace(/(\d{4})\d{10}(\d{3})X/g, '$1**********$2X')
+    } else {
+      return id.replace(/(\d{4})\d{10}(\d{4})/g, '$1**********$2')
+    }
   } else {
     return id
   }
@@ -497,6 +507,301 @@ function getMobileInvisible(mobile) {
   } else {
     return mobile
   }
+}
+
+// 获取流程节点
+function getApproveFlow(flowno) {
+  let flowFlag = flowno.substr(0, 2)
+  let flows = {
+    '01': {
+      id: '01',
+      parent: null,
+      next: '030',
+      subflows: {
+        '010': {
+          id: '010',
+          name: '评审中(技术)'
+        },
+        '011': {
+          id: '011',
+          name: '评审通过(技术)'
+        },
+        '012': {
+          id: '012',
+          name: '评审未通过(技术)'
+        }
+      }
+    },
+    '03': {
+      id: '03',
+      parent: '010',
+      next: '050',
+      subflows: {
+        '030': {
+          id: '030',
+          name: '评审中(合同)'
+        },
+        '031': {
+          id: '031',
+          name: '评审通过(合同)'
+        },
+        '032': {
+          id: '032',
+          name: '评审未通过(合同)'
+        }
+      }
+    },
+    '05': {
+      id: '05',
+      parent: '030',
+      next: '080',
+      subflows: {
+        '050': {
+          id: '050',
+          name: '评审中(法务)'
+        },
+        '051': {
+          id: '051',
+          name: '评审通过(法务)'
+        },
+        '052': {
+          id: '052',
+          name: '评审未通过(法务)'
+        }
+      }
+    },
+    '08': {
+      id: '08',
+      parent: '070',
+      next: '090',
+      subflows: {
+        '080': {
+          id: '080',
+          name: '数据接入中'
+        },
+        '081': {
+          id: '081',
+          name: '数据已接入'
+        }
+      }
+    },
+    '09': {
+      id: '09',
+      parent: '080',
+      next: null,
+      subflows: {
+        '090': {
+          id: '090',
+          name: '开票中'
+        },
+        '091': {
+          id: '091',
+          name: '已开票'
+        },
+        '092': {
+          id: '092',
+          name: '打款中'
+        },
+        '093': {
+          id: '093',
+          name: '款已到'
+        }
+      }
+    }
+  }
+  return flows[flowFlag]['subflows'][flowno]
+}
+
+// 电压等级
+function getVoltage(voltageno) {
+  let voltages = {
+    '00': {
+      id: '00',
+      name: '0.4',
+      ratio: 0.0,
+      unit: 'kV'
+    },
+    '01': {
+      id: '01',
+      name: '10',
+      ratio: 1.0,
+      unit: 'kV'
+    },
+    '02': {
+      id: '02',
+      name: '35',
+      ratio: 1.1,
+      unit: 'kV'
+    },
+    '03': {
+      id: '03',
+      name: '110',
+      ratio: 1.3,
+      unit: 'kV'
+    },
+    '04': {
+      id: '04',
+      name: '220',
+      ratio: 1.5,
+      unit: 'kV'
+    }
+  }
+  return voltages[voltageno]
+}
+
+// 变压器容量
+function getTransformer(transformer) {
+  let transformers = {
+    '00': {
+      id: '00',
+      name: 630,
+      unit: 'kVA',
+      base: 500
+    },
+    '01': {
+      id: '01',
+      name: 1000,
+      unit: 'kVA',
+      base: 800
+    },
+    '02': {
+      id: '02',
+      name: 1600,
+      unit: 'kVA',
+      base: 1200
+    },
+    '03': {
+      id: '03',
+      name: 2500,
+      unit: 'kVA',
+      base: 2000
+    },
+    '04': {
+      id: '04',
+      name: 2501,
+      unit: 'kVA',
+      base: 3500
+    }
+  }
+  return transformers[transformer]
+}
+
+// 服务方案
+function getServicePlan(planno) {
+  let serPlans = {
+    '00': {
+      id: '00',
+      name: '基础服务'
+    },
+    '01': {
+      id: '01',
+      name: '定制服务'
+    },
+    '20': {
+      id: '20',
+      name: '托管服务'
+    }
+  }
+  return serPlans[planno]
+}
+// 服务产品
+function getServiceItem(itemno) {
+  let serItems = {
+    '00000': {
+      id: '00000',
+      name: '平台基础服务'
+    },
+    '10000': {
+      id: '10000',
+      name: '配电室带电巡检'
+    },
+    '10001': {
+      id: '10001',
+      name: '配电设施设备维保'
+    },
+    '10002': {
+      id: '10002',
+      name: '配电设备预防性试验'
+    },
+    '10003': {
+      id: '10003',
+      name: '配电设施设备应急抢修保障'
+    },
+    '10004': {
+      id: '10004',
+      name: '能效管理'
+    },
+    '20000': {
+      id: '20000',
+      name: '包含平台基础服务、线下维护服务、应急抢修保障'
+    }
+  }
+  return serItems[itemno]
+}
+// 服务类别
+function getServiceType(typeno) {
+  let servTypes = {
+    '0000000': {
+      id: '0000000',
+      name: '监测'
+    },
+    '1000000': {
+      id: '1000000',
+      name: '巡检'
+    },
+    '1000100': {
+      id: '1000100',
+      name: '维保'
+    },
+    '1000200': {
+      id: '1000200',
+      name: '试验'
+    },
+    '1000300': {
+      id: '1000300',
+      name: '试验'
+    },
+    '1000400': {
+      id: '1000400',
+      name: '节能'
+    },
+    '2000000': {
+      id: '2000000',
+      name: '托管'
+    }
+  }
+  return servTypes[typeno]
+}
+
+// 行业分类
+function getIndustry(industryno) {
+  let industrys = {
+    '00': {
+      id: '00',
+      name: '居民',
+      industryratio: 1.7,
+      usehuours: 2500,
+      powerratio: 0.8,
+      unitprice: 0.42
+    },
+    '01': {
+      id: '01',
+      name: '一般工商业',
+      industryratio: 1.2,
+      usehuours: 5000,
+      powerratio: 0.8,
+      unitprice: 0.7
+    },
+    '02': {
+      id: '02',
+      name: '大工业',
+      industryratio: 1.4,
+      usehuours: 5000,
+      powerratio: 0.8,
+      unitprice: 0.55
+    }
+  }
+  return industrys[industryno]
 }
 
 export {
@@ -521,5 +826,12 @@ export {
   addHour,
   findSingleElement,
   getIdInvisible,
-  getMobileInvisible
+  getMobileInvisible,
+  getApproveFlow,
+  getVoltage,
+  getTransformer,
+  getServicePlan,
+  getServiceType,
+  getServiceItem,
+  getIndustry
 }

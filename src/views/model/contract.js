@@ -70,22 +70,6 @@ export function CContract(contract) {
     contract && contract.hasOwnProperty('lawstate') ? contract.lawstate : null
   this.lawnote =
     contract && contract.hasOwnProperty('lawnote') ? contract.lawnote : null
-  this.financeuserid =
-    contract && contract.hasOwnProperty('financeuserid')
-      ? contract.financeuserid
-      : null
-  this.financeusername =
-    contract && contract.hasOwnProperty('financeusername')
-      ? contract.financeusername
-      : null
-  this.financestate =
-    contract && contract.hasOwnProperty('financestate')
-      ? contract.financestate
-      : null
-  this.financesnote =
-    contract && contract.hasOwnProperty('financesnote')
-      ? contract.financesnote
-      : null
   this.accessstate =
     contract && contract.hasOwnProperty('accessstate')
       ? contract.accessstate
@@ -100,13 +84,13 @@ export function CContract(contract) {
       : null
   this.plan = contract && contract.hasOwnProperty('plan') ? contract.plan : null
   this.voltagelevel =
-    contract && contract.hasOwnProperty('voltagelevel')
-      ? contract.voltagelevel
-      : null
+    contract && contract.hasOwnProperty('voltage') ? contract.voltage : null
   this.transformer =
     contract && contract.hasOwnProperty('transformer')
       ? contract.transformer
       : null
+  this.industry =
+    contract && contract.hasOwnProperty('industry') ? contract.industry : null
 }
 
 CContract.prototype.getId = function() {
@@ -137,7 +121,7 @@ CContract.prototype.getContractvalue = function() {
   return this.contractvalue
 }
 
-CContract.prototype.setContractname = function(contractvalue) {
+CContract.prototype.setContractvalue = function(contractvalue) {
   this.contractvalue = contractvalue
 }
 
@@ -145,7 +129,7 @@ CContract.prototype.getContractstart = function() {
   return this.contractstart
 }
 
-CContract.prototype.setContractname = function(contractstart) {
+CContract.prototype.setContractstart = function(contractstart) {
   this.contractstart = contractstart
 }
 
@@ -277,38 +261,6 @@ CContract.prototype.setLawnote = function(lawnote) {
   this.lawnote = lawnote
 }
 
-CContract.prototype.getFinanceuserid = function() {
-  return this.financeuserid
-}
-
-CContract.prototype.setFinanceuserid = function(financeuserid) {
-  this.financeuserid = financeuserid
-}
-
-CContract.prototype.getFinanceusername = function() {
-  return this.financeusername
-}
-
-CContract.prototype.setFinanceusername = function(financeusername) {
-  this.financeusername = financeusername
-}
-
-CContract.prototype.getFinancestate = function() {
-  return this.financestate
-}
-
-CContract.prototype.setFinancestate = function(financestate) {
-  this.financestate = financestate
-}
-
-CContract.prototype.getFinancestate = function() {
-  return this.financestate
-}
-
-CContract.prototype.setFinancesnote = function(financesnote) {
-  this.financesnote = financesnote
-}
-
 CContract.prototype.getAccessstate = function() {
   return this.accessstate
 }
@@ -333,12 +285,12 @@ CContract.prototype.setPlan = function(plan) {
   this.plan = plan
 }
 
-CContract.prototype.getVoltagelevel = function() {
-  return this.voltagelevel
+CContract.prototype.getVoltage = function() {
+  return this.voltage
 }
 
-CContract.prototype.setVoltagelevel = function(voltagelevel) {
-  this.voltagelevel = voltagelevel
+CContract.prototype.setVoltage = function(voltage) {
+  this.voltage = voltage
 }
 
 CContract.prototype.getTransformer = function() {
@@ -347,4 +299,12 @@ CContract.prototype.getTransformer = function() {
 
 CContract.prototype.setTransformer = function(transformer) {
   this.transformer = transformer
+}
+
+CContract.prototype.getIndustry = function() {
+  return this.industry
+}
+
+CContract.prototype.setIndustry = function(industry) {
+  this.industry = industry
 }
