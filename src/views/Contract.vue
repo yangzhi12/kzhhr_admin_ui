@@ -14,7 +14,7 @@
                       append-icon="search"
                       @keyup.enter="getContractList"></v-text-field>
       </v-flex>
-      <v-flex sm2
+      <!-- <v-flex sm2
               text-xs-right>
         <v-btn small
                fab
@@ -24,7 +24,7 @@
                @click="addContract">
           <v-icon dark>add</v-icon>
         </v-btn>
-      </v-flex>
+      </v-flex> -->
     </v-layout>
     <v-data-table :headers="headers"
                   :items="contracts"
@@ -73,23 +73,40 @@
           </template>
         </td>
         <td class="justify-center layout px-0">
-          <v-icon small
+          <v-icon medium
                   class="mr-2"
                   title="查看"
                   @click="showContractDetail(props.item.id)">
             remove_red_eye
           </v-icon>
-          <v-icon small
-                  class="mr-2"
-                  title="编辑"
-                  @click="editCurContract(props.item.id)">
-            edit
+          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '081')"
+                  medium
+                  title="数据已接入"
+                  color="warning"
+                  @click="setCurContractstate(props.item.id, '081')">
+            backup
           </v-icon>
-          <v-icon small
-                  title="删除"
+          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '091')"
+                  medium
+                  class="mr-2"
+                  title="开票"
+                  color="yellow"
+                  @click="setCurContractstate(props.item.id, '091')">
+            receipt
+          </v-icon>
+          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '093')"
+                  medium
+                  title="收款"
+                  color="warning"
+                  @click="setCurContractstate(props.item.id, '093')">
+            attach_money
+          </v-icon>
+          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '099')"
+                  medium
+                  title="合同到期"
                   color="error"
-                  @click="deleteCurContract(props.item.id)">
-            delete
+                  @click="setCurContractstate(props.item.id, '099')">
+            remove_circle
           </v-icon>
         </td>
       </template>
@@ -241,11 +258,14 @@ export default {
       this.addOrEditDialogTitle = '编辑合同信息'
       this.addOrEditContractDialog = 'IS_EDIT'
     },
-    deleteCurContract (id) {
+    // 开票
+    setCurContractstate (id, state) {
+      // 获取当前用户ID
+      let userid = this.$store.state['user']['id']
       if (id) {
-        let auth = Object.assign({}, { id: id })
+        let auth = Object.assign({}, { id: id, state: state, userid: userid })
         try {
-          excuteApis(auth, global.config.adminApis, 'contract', 'delete').then(response => {
+          excuteApis(auth, global.config.adminApis, 'contract', 'state').then(response => {
             if (response.status === 200) {
               let res = response.data
               if (res.errno) {
@@ -253,7 +273,7 @@ export default {
                 this.snackbar = true
               } else {
                 this.getContractList()
-                this.snackbarContent = '用户删除成功'
+                this.snackbarContent = '操作成功'
                 this.snackbar = true
               }
             }
@@ -276,6 +296,12 @@ export default {
     },
     getMoney (money) {
       return getCommaMoney(money, false)
+    },
+    isStateBtnsVisible (flowno, futureno) {
+      if (!flowno) return false
+      let role = this.$store.state['user']['roleno']
+      let curstate = getApproveFlow(flowno)
+      return curstate ? curstate['isbtns'].includes(futureno) && curstate['isprivilege'].includes(role) : false
     }
   },
   created () {

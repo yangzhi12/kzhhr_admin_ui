@@ -520,15 +520,21 @@ function getApproveFlow(flowno) {
       subflows: {
         '010': {
           id: '010',
-          name: '评审中(技术)'
+          name: '评审中(技术)',
+          isbtns: ['011', '012'],
+          isprivilege: ['ADMIN', 'TECHNICAL']
         },
         '011': {
           id: '011',
-          name: '评审通过(技术)'
+          name: '评审通过(技术)',
+          isbtns: ['031', '032'],
+          isprivilege: ['ADMIN', 'CONTRACT']
         },
         '012': {
           id: '012',
-          name: '评审未通过(技术)'
+          name: '评审未通过(技术)',
+          isbtns: ['011'],
+          isprivilege: ['ADMIN', 'TECHNICAL']
         }
       }
     },
@@ -539,15 +545,21 @@ function getApproveFlow(flowno) {
       subflows: {
         '030': {
           id: '030',
-          name: '评审中(合同)'
+          name: '评审中(合同)',
+          isbtns: ['031', '032'],
+          isprivilege: ['ADMIN', 'CONTRACT']
         },
         '031': {
           id: '031',
-          name: '评审通过(合同)'
+          name: '评审通过(合同)',
+          isbtns: ['051', '052'],
+          isprivilege: ['ADMIN', 'LAW']
         },
         '032': {
           id: '032',
-          name: '评审未通过(合同)'
+          name: '评审未通过(合同)',
+          isbtns: ['031'],
+          isprivilege: ['ADMIN', 'CONTRACT']
         }
       }
     },
@@ -558,15 +570,21 @@ function getApproveFlow(flowno) {
       subflows: {
         '050': {
           id: '050',
-          name: '评审中(法务)'
+          name: '评审中(法务)',
+          isbtns: ['051', '052'],
+          isprivilege: ['ADMIN', 'LAW']
         },
         '051': {
           id: '051',
-          name: '评审通过(法务)'
+          name: '评审通过(法务)',
+          isbtns: ['081'],
+          isprivilege: ['ADMIN', 'FINANCE']
         },
         '052': {
           id: '052',
-          name: '评审未通过(法务)'
+          name: '评审未通过(法务)',
+          isbtns: ['051'],
+          isprivilege: ['ADMIN', 'LAW']
         }
       }
     },
@@ -577,11 +595,15 @@ function getApproveFlow(flowno) {
       subflows: {
         '080': {
           id: '080',
-          name: '数据接入中'
+          name: '数据接入中',
+          isbtns: ['081'],
+          isprivilege: ['ADMIN', 'TECHNICAL']
         },
         '081': {
           id: '081',
-          name: '数据已接入'
+          name: '数据已接入',
+          isbtns: ['091'],
+          isprivilege: ['ADMIN', 'FINANCE']
         }
       }
     },
@@ -592,19 +614,39 @@ function getApproveFlow(flowno) {
       subflows: {
         '090': {
           id: '090',
-          name: '开票中'
+          name: '开票中',
+          isbtns: ['091'],
+          isprivilege: ['ADMIN', 'FINANCE']
         },
         '091': {
           id: '091',
-          name: '已开票'
+          name: '已开票',
+          isbtns: ['092'],
+          isprivilege: ['ADMIN', 'FINANCE']
         },
         '092': {
           id: '092',
-          name: '打款中'
+          name: '打款中',
+          isbtns: ['093'],
+          isprivilege: ['ADMIN', 'FINANCE']
         },
         '093': {
           id: '093',
-          name: '款已到'
+          name: '款已到',
+          isbtns: [],
+          isprivilege: ['ADMIN', 'FINANCE']
+        },
+        '094': {
+          id: '094',
+          name: '服务中',
+          isbtns: ['099'],
+          isprivilege: ['ADMIN', 'FINANCE']
+        },
+        '099': {
+          id: '099',
+          name: '合同到期',
+          isbtns: [],
+          isprivilege: ['ADMIN', 'FINANCE']
         }
       }
     }
@@ -806,7 +848,7 @@ function getIndustry(industryno) {
 
 // 逗号分隔金额
 function getCommaMoney(s, type) {
-  if (/[^0-9\.]/.test(s)) return '0.00'
+  if (/[^0-9.]/.test(s)) return '0.00'
   if (s == null || s == 'null' || s == '') return '0.00'
   s = s.toString().replace(/^(\d*)$/, '$1.')
   s = (s + '00').replace(/(\d*\.\d\d)\d*/, '$1')

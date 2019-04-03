@@ -11,7 +11,13 @@ export default {
   data() {
     let contract = new CContract()
     return {
-      contract: contract
+      contract: contract,
+      snackbar: false,
+      y: 'top',
+      x: null,
+      mode: '',
+      timeout: 6000,
+      snackbarContent: ''
     }
   },
   methods: {
@@ -207,6 +213,43 @@ export default {
     },
     getMoney(money) {
       return getCommaMoney(money, false)
+    },
+    isStateBtnsVisible(flowno, futureno) {
+      if (!flowno) return false
+      let role = this.$store.state['user']['roleno']
+      let curstate = getApproveFlow(flowno)
+      return curstate
+        ? curstate['isbtns'].includes(futureno) &&
+            curstate['isprivilege'].includes(role)
+        : false
+    },
+    // 开票
+    setCurContractstate(id, state) {
+      // 获取当前用户ID
+      let userid = this.$store.state['user']['id']
+      if (id) {
+        let auth = Object.assign({}, { id: id, state: state, userid: userid })
+        try {
+          excuteApis(auth, global.config.adminApis, 'contract', 'state').then(
+            response => {
+              if (response.status === 200) {
+                let res = response.data
+                if (res.errno) {
+                  this.snackbarContent = res.errmsg
+                  this.snackbar = true
+                } else {
+                  this.getContractInfoById(id).then(() => {
+                    this.snackbarContent = '操作成功'
+                    this.snackbar = true
+                  })
+                }
+              }
+            }
+          )
+        } catch (error) {
+          window.console.log(error)
+        }
+      }
     }
   }
 }

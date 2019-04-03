@@ -268,7 +268,54 @@
           </div>
         </div>
       </div>
+      <template slot="btnActions">
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat
+                 color="success"
+                 @click.native="setCurContractstate(contract.id, '011')"
+                 v-if="isStateBtnsVisible(contract.contractstate, '011')"> 评审通过(技术) </v-btn>
+          <v-btn flat
+                 color="error"
+                 @click.native="setCurContractstate(contract.id, '012')"
+                 v-if="isStateBtnsVisible(contract.contractstate, '012')"> 评审未通过(技术) </v-btn>
+          <v-btn flat
+                 color="success"
+                 @click.native="setCurContractstate(contract.id, '031')"
+                 v-if="isStateBtnsVisible(contract.contractstate, '031')"> 评审通过(合同) </v-btn>
+          <v-btn flat
+                 color="error"
+                 @click.native="setCurContractstate(contract.id, '032')"
+                 v-if="isStateBtnsVisible(contract.contractstate, '032')"> 评审未通过(合同) </v-btn>
+          <v-btn flat
+                 color="success"
+                 @click.native="setCurContractstate(contract.id, '051')"
+                 v-if="isStateBtnsVisible(contract.contractstate, '051')"> 评审通过(法务) </v-btn>
+          <v-btn flat
+                 color="error"
+                 @click.native="setCurContractstate(contract.id, '052')"
+                 v-if="isStateBtnsVisible(contract.contractstate, '052')"> 评审未通过(法务) </v-btn>
+          <v-btn flat
+                 @click.native="cancel"> 取消 </v-btn>
+        </v-card-actions>
+      </template>
     </v-modaldialog>
+    <v-snackbar v-model="snackbar"
+                :bottom="y === 'bottom'"
+                :left="x === 'left'"
+                :right="x === 'right'"
+                :timeout="3000"
+                :top="y === 'top'"
+                color="primary"
+                :vertical="mode === 'vertical'">
+      {{ snackbarContent }}
+      <v-btn dark
+             flat
+             @click="snackbar = false">
+        关闭
+      </v-btn>
+    </v-snackbar>
   </div>
 </template>
 
