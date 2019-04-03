@@ -8,7 +8,7 @@
       <v-flex sm2
               text-xs-right>
         <v-text-field v-model="keywords"
-                      label="输入合同编号号或名字查找"
+                      label="输入合同编号或客户名称查找"
                       single-line
                       hide-details
                       append-icon="search"
@@ -164,7 +164,7 @@ export default {
           sortable: true,
           value: 'contractno'
         },
-        { text: '合同名称', value: 'contractname', align: 'center', sortable: false },
+        { text: '客户名称', value: 'contractname', align: 'center', sortable: false },
         { text: '合同金额(元)', value: 'contractvalue', align: 'center', sortable: false },
         { text: '开始时间', value: 'contractstart', align: 'center', sortable: false },
         { text: '结束时间', value: 'contractend', align: 'center', sortable: false },
@@ -211,7 +211,10 @@ export default {
     addOrEditContractDialog (val) {
       val === 'IS_NONE' ? this.getContractList() : null
     },
-    'paginationauth.rowsPerPage' () {
+    'paginationContract.rowsPerPage' () {
+      this.getContractList()
+    },
+    'paginationContract.page' () {
       this.getContractList()
     }
   },

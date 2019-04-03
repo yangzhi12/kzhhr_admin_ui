@@ -21,12 +21,12 @@
                     <span>{{ contract.contractno }}</span>
                   </v-flex>
                   <v-flex xs4>
-                    <span class="infolabel">合同金额: </span>
-                    <span>{{ getMoney(contract.contractvalue) || '--' }} 元</span>
-                  </v-flex>
-                  <v-flex xs4>
                     <span class="infolabel">签单人: </span>
                     <span>{{ contract.username || '--' }}</span>
+                  </v-flex>
+                  <v-flex xs4>
+                    <span class="infolabel">合同金额: </span>
+                    <span>{{ getMoney(contract.contractvalue) || '--' }} 元</span>
                   </v-flex>
                 </v-layout>
                 <v-layout row>
