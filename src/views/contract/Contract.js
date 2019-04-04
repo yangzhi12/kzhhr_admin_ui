@@ -256,10 +256,15 @@ export default {
     getContractFee() {
       let industry = this.contract.getIndustry()
       let transformer = this.contract.getTransformer()
+      let plan = this.contract.getPlan()
       if (industry && transformer) {
         let requestParams = Object.assign(
           {},
-          { industry: industry, transformer: transformer }
+          {
+            industry: industry,
+            transformer: transformer,
+            plan: plan.substr(0, 2)
+          }
         )
         try {
           excuteApis(

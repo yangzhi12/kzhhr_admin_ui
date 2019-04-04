@@ -36,7 +36,7 @@
         <td class="text-xs-center">
           <template>
             <div>
-              {{ props.item.contractno }}
+              {{ props.item.contractno || '--' }}
             </div>
           </template>
         </td>

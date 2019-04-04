@@ -375,6 +375,8 @@ export default {
     disposeDialog () {
       // 根据合同ID获取合同详情
       if (!this.contractid) return
+      this.fee = 0.0
+      this.recommendfee = 0.0
       this.getContractInfoById(this.contractid).then(() => { })
     }
   },
