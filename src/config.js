@@ -37,7 +37,8 @@ const config = {
     contract: {
       list: { url: '/index', method: 'post' },
       info: { url: '/info', method: 'get' },
-      state: { url: '/state', method: 'post' }
+      state: { url: '/state', method: 'post' },
+      fee: { url: '/fee', method: 'post' }
     }
   },
   level: {

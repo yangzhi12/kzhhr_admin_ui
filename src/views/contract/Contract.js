@@ -17,7 +17,9 @@ export default {
       x: null,
       mode: '',
       timeout: 6000,
-      snackbarContent: ''
+      snackbarContent: '',
+      fee: 0.0,
+      recommendfee: 0.0
     }
   },
   methods: {
@@ -246,6 +248,37 @@ export default {
               }
             }
           )
+        } catch (error) {
+          window.console.log(error)
+        }
+      }
+    },
+    getContractFee() {
+      let industry = this.contract.getIndustry()
+      let transformer = this.contract.getTransformer()
+      if (industry && transformer) {
+        let requestParams = Object.assign(
+          {},
+          { industry: industry, transformer: transformer }
+        )
+        try {
+          excuteApis(
+            requestParams,
+            global.config.adminApis,
+            'contract',
+            'fee'
+          ).then(response => {
+            if (response.status === 200) {
+              let res = response.data
+              if (res.errno) {
+                window.console.log(errmsg)
+              } else {
+                let data = res.data
+                this.recommendfee = data.recommendfee
+                this.fee = data.fee
+              }
+            }
+          })
         } catch (error) {
           window.console.log(error)
         }
