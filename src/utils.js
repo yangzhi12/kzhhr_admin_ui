@@ -801,7 +801,7 @@ function getServiceType(typeno) {
     },
     '1000300': {
       id: '1000300',
-      name: '试验'
+      name: '抢修'
     },
     '1000400': {
       id: '1000400',
