@@ -48,6 +48,7 @@
           </template>
         </td>
         <td class="text-xs-center">{{ getMoney(props.item.contractvalue) }}</td>
+        <td class="text-xs-center">{{ getMoney(props.item.recommendvalue) }}</td>
         <td class="text-xs-center">
           <div class="text-xs-center">
             {{ props.item.contractstart ? getFormtedTime(props.item.contractstart) : '-' }}
@@ -166,6 +167,7 @@ export default {
         },
         { text: '客户名称', value: 'contractname', align: 'center', sortable: false },
         { text: '合同金额(元)', value: 'contractvalue', align: 'center', sortable: false },
+        { text: '建议收费(元)', value: 'recommendvalue', align: 'center', sortable: false },
         { text: '开始时间', value: 'contractstart', align: 'center', sortable: false },
         { text: '结束时间', value: 'contractend', align: 'center', sortable: false },
         { text: '签单人', value: 'username', align: 'center', sortable: false },

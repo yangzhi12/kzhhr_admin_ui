@@ -83,7 +83,7 @@ export function CContract(contract) {
       ? contract.accountstate
       : null
   this.plan = contract && contract.hasOwnProperty('plan') ? contract.plan : null
-  this.voltagelevel =
+  this.voltage =
     contract && contract.hasOwnProperty('voltage') ? contract.voltage : null
   this.transformer =
     contract && contract.hasOwnProperty('transformer')
@@ -92,6 +92,10 @@ export function CContract(contract) {
   this.industry =
     contract && contract.hasOwnProperty('industry') ? contract.industry : null
   this.plan = contract && contract.hasOwnProperty('plan') ? contract.plan : null
+  this.recommendvalue =
+    contract && contract.hasOwnProperty('recommendvalue')
+      ? contract.recommendvalue
+      : null
 }
 
 CContract.prototype.getId = function() {
@@ -316,4 +320,12 @@ CContract.prototype.getPlan = function() {
 
 CContract.prototype.setPlan = function(plan) {
   this.plan = plan
+}
+
+CContract.prototype.getRecommendvalue = function() {
+  return this.recommendvalue
+}
+
+CContract.prototype.setRecommendvalue = function(recommendvalue) {
+  this.recommendvalue = recommendvalue
 }

@@ -194,6 +194,11 @@ export default {
         this.contract.setPlan(
           resContract.hasOwnProperty('plan') ? resContract.plan : null
         )
+        this.contract.setRecommendvalue(
+          resContract.hasOwnProperty('recommendvalue')
+            ? resContract.recommendvalue
+            : null
+        )
       }
     },
     getApproveFlowName(flowno) {
@@ -225,7 +230,7 @@ export default {
             curstate['isprivilege'].includes(role)
         : false
     },
-    // 开票
+    // 设置合同状态
     setCurContractstate(id, state) {
       // 获取当前用户ID
       let userid = this.$store.state['user']['id']
@@ -240,10 +245,13 @@ export default {
                   this.snackbarContent = res.errmsg
                   this.snackbar = true
                 } else {
-                  this.getContractInfoById(id).then(() => {
-                    this.snackbarContent = '操作成功'
-                    this.snackbar = true
-                  })
+                  this.snackbarContent = '操作成功'
+                  this.snackbar = true
+                  // this.getContractInfoById(id).then(() => {
+                  //   this.snackbarContent = '操作成功'
+                  //   this.snackbar = true
+                  // })
+                  this.contractViewDialog = false
                 }
               }
             }
@@ -252,42 +260,42 @@ export default {
           window.console.log(error)
         }
       }
-    },
-    getContractFee() {
-      let industry = this.contract.getIndustry()
-      let transformer = this.contract.getTransformer()
-      let plan = this.contract.getPlan()
-      if (industry && transformer) {
-        let requestParams = Object.assign(
-          {},
-          {
-            industry: industry,
-            transformer: transformer,
-            plan: plan.substr(0, 2)
-          }
-        )
-        try {
-          excuteApis(
-            requestParams,
-            global.config.adminApis,
-            'contract',
-            'fee'
-          ).then(response => {
-            if (response.status === 200) {
-              let res = response.data
-              if (res.errno) {
-                window.console.log(errmsg)
-              } else {
-                let data = res.data
-                this.recommendfee = data.recommendfee
-                this.fee = data.fee
-              }
-            }
-          })
-        } catch (error) {
-          window.console.log(error)
-        }
-      }
     }
+    // getContractFee() {
+    //   let industry = this.contract.getIndustry()
+    //   let transformer = this.contract.getTransformer()
+    //   let plan = this.contract.getPlan()
+    //   if (industry && transformer) {
+    //     let requestParams = Object.assign(
+    //       {},
+    //       {
+    //         industry: industry,
+    //         transformer: transformer,
+    //         plan: plan.substr(0, 2)
+    //       }
+    //     )
+    //     try {
+    //       excuteApis(
+    //         requestParams,
+    //         global.config.adminApis,
+    //         'contract',
+    //         'fee'
+    //       ).then(response => {
+    //         if (response.status === 200) {
+    //           let res = response.data
+    //           if (res.errno) {
+    //             window.console.log(errmsg)
+    //           } else {
+    //             let data = res.data
+    //             this.recommendfee = data.recommendfee
+    //             this.fee = data.fee
+    //           }
+    //         }
+    //       })
+    //     } catch (error) {
+    //       window.console.log(error)
+    //     }
+    //   }
+    // }
   }
 }
