@@ -640,13 +640,13 @@ function getApproveFlow(flowno) {
           id: '094',
           name: '服务中',
           isbtns: ['099'],
-          isprivilege: ['ADMIN', 'FINANCE']
+          isprivilege: ['ADMIN', 'BUSINESS']
         },
         '099': {
           id: '099',
           name: '合同到期',
           isbtns: [],
-          isprivilege: ['ADMIN', 'FINANCE']
+          isprivilege: ['ADMIN']
         }
       }
     }
