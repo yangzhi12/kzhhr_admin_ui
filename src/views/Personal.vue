@@ -1,11 +1,6 @@
 <template>
-  <v-card class="page-content mt-2">
-    <v-layout row>
-      <v-flex sm12
-              text-xs-left>
-        <span class="personalTitle">个人信息</span>
-      </v-flex>
-    </v-layout>
+  <v-card class="page-content mt-2"
+          flat>
     <v-card-text>
       <span>用户姓名：{{user.username}}</span><br>
       <span>用户手机号：{{user.mobile}}</span><br>

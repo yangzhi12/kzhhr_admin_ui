@@ -1,5 +1,6 @@
 <template>
-  <v-card class="page-content mt-2">
+  <v-card class="page-content mt-2"
+          flat>
     <v-layout row
               pa-2>
       <v-flex sm2
@@ -34,16 +35,16 @@
                   class="elevation-0">
       <template v-slot:items="props">
         <!-- <td class="text-xs-center">
-          <template>
-            <v-avatar size="45px"
-                      class="grey lighten-4">
-              <img v-if="props.item.avatar"
-                   :src="props.item.avatar" />
-              <img v-else
-                   src="../assets/moren.png" />
-            </v-avatar>
-          </template>
-        </td> -->
+            <template>
+              <v-avatar size="45px"
+                        class="grey lighten-4">
+                <img v-if="props.item.avatar"
+                    :src="props.item.avatar" />
+                <img v-else
+                    src="../assets/moren.png" />
+              </v-avatar>
+            </template>
+          </td> -->
         <td class="text-xs-center">
           <template>
             <div>
@@ -80,12 +81,12 @@
           </template>
         </td>
         <!-- <td class="text-xs-center">
-            <template>
-              <div class="text-xs-center">
-                {{ props.item.birthday ? getFormtedTime(props.item.birthday) : '-' }}
-              </div>
-            </template>
-          </td> -->
+              <template>
+                <div class="text-xs-center">
+                  {{ props.item.birthday ? getFormtedTime(props.item.birthday) : '-' }}
+                </div>
+              </template>
+            </td> -->
         <td class="text-xs-center">{{ getMobile(props.item.mobile) }}</td>
         <!-- <td class="text-xs-center">{{ props.item.address ? props.item.address : '--' }}</td> -->
         <!-- <td class="text-xs-center">{{ props.item.nickname }}</td> -->

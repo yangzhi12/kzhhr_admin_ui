@@ -6,18 +6,16 @@
       <v-subheader class="pl-0 pr-0">每页显示</v-subheader>
     </v-flex>
     <v-flex sm3
-            xl1
-            class="ml-3 pr-0">
+            xl1>
       <v-select v-bind:items="pageSizes"
                 v-model="currentPageSize"
                 single-line
                 hide-details
                 menu-props="bottom"
-                class="pt-2 pagesizes"></v-select>
+                class="pagesizes"></v-select>
     </v-flex>
     <v-flex sm4
-            xl3
-            class="ml-3 pr-0">
+            xl3>
       <v-subheader class="pr-0 pl-0">
         <span>共 {{ pagination.total }} 条
           <span v-if="pagination.total > 0">, 当前 {{ startRow }} - {{ startRow + pagination.rowsPerPage > pagination.total ? pagination.total : startRow + pagination.rowsPerPage - 1}} 条&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -116,6 +114,8 @@ export default {
 <style scoped>
 .pagesizes {
   max-width: 80px;
+  padding-top: 0px;
+  margin-top: 3px;
 }
 .arrow {
   cursor: pointer;

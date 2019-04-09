@@ -3,7 +3,7 @@
     <v-fade-transition mode="out-in">
       <router-view />
     </v-fade-transition>
-    <v-footer height="auto"
+    <!-- <v-footer height="auto"
               class="white"
               fixed>
       <v-layout row
@@ -16,7 +16,7 @@
           昆明自动化成套设备股份有限公司&nbsp;&nbsp;&nbsp;&nbsp;@版权所有&nbsp;&nbsp;&nbsp;&nbsp;Ver0.3.0.190405
         </v-flex>
       </v-layout>
-    </v-footer>
+    </v-footer> -->
   </v-content>
 </template>
 

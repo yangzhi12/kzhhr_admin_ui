@@ -1,5 +1,6 @@
 <template>
-  <v-card class="page-content mt-2">
+  <v-card class="page-content mt-2"
+          flat>
     <v-layout row
               pa-2>
       <v-flex sm2

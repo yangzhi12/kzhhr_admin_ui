@@ -1,8 +1,9 @@
 <template>
-  <v-card class="page-content mt-2">
+  <v-card class="page-content mt-2"
+          flat>
     <v-layout row
               pa-2>
-      <v-flex sm2
+      <v-flex xs2
               text-xs-left><span class="authTitle">合同管理</span></v-flex>
       <v-spacer></v-spacer>
       <v-flex sm2
@@ -14,6 +15,7 @@
                       append-icon="search"
                       @keyup.enter="getContractList"></v-text-field>
       </v-flex>
+      <v-flex xs1></v-flex>
       <!-- <v-flex sm2
               text-xs-right>
         <v-btn small
