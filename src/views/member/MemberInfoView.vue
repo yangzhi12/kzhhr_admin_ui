@@ -119,11 +119,11 @@
           <v-btn flat
                  color="success"
                  @click.native="acceptMemberInfo"
-                 v-if="getApprovalFlag(member.state)"> 审核通过 </v-btn>
+                 v-if="getApprovalFlag(member.state) && getRoleBtns()"> 审核通过 </v-btn>
           <v-btn flat
                  color="primary"
                  @click.native="rejectMemberInfo"
-                 v-if="getApprovalFlag(member.state)"> 审核未通过 </v-btn>
+                 v-if="getApprovalFlag(member.state) && getRoleBtns()"> 审核未通过 </v-btn>
           <v-btn flat
                  @click.native="cancel"> 取消 </v-btn>
         </v-card-actions>
@@ -134,6 +134,7 @@
 
 <script>
 import Member from './Member.js'
+import { isRoleBtnsVisible } from '@/utils'
 
 export default {
   name: 'v-member-info-view',
@@ -193,6 +194,9 @@ export default {
       this.member.rejected().then(() => {
         this.memberViewDialog = false
       })
+    },
+    getRoleBtns () {
+      return isRoleBtnsVisible()
     }
   },
   created () {

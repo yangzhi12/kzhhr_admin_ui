@@ -71,7 +71,7 @@
                 <v-layout row>
                   <v-flex xs4>
                     <span class="infolabel">所属行业: </span>
-                    <span>{{ contract.industry ? getIndustryName(contract.industry)['name'] : '--' }}</span>
+                    <span>{{ contract.industry ? getIndustryName(contract.industry)['industryname'] : '--' }}</span>
                   </v-flex>
                   <v-flex xs4>
                     <span class="infolabel">电压等级: </span>
@@ -294,14 +294,14 @@
                  color="error"
                  @click.native="setCurContractstate(contract.id, '032')"
                  v-if="isStateBtnsVisible(contract.contractstate, '032')"> 评审未通过(合同) </v-btn>
-          <v-btn flat
+          <!-- <v-btn flat
                  color="success"
                  @click.native="setCurContractstate(contract.id, '051')"
                  v-if="isStateBtnsVisible(contract.contractstate, '051')"> 评审通过(法务) </v-btn>
           <v-btn flat
                  color="error"
                  @click.native="setCurContractstate(contract.id, '052')"
-                 v-if="isStateBtnsVisible(contract.contractstate, '052')"> 评审未通过(法务) </v-btn>
+                 v-if="isStateBtnsVisible(contract.contractstate, '052')"> 评审未通过(法务) </v-btn> -->
           <v-btn flat
                  @click.native="cancel"> 取消 </v-btn>
         </v-card-actions>

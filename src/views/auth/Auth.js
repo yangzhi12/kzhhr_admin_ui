@@ -80,6 +80,9 @@ export default {
         case 'FINANCE':
           res = '财务组'
           break
+        case 'BUSINESS':
+          res = '运营组'
+          break
         default:
       }
       return res

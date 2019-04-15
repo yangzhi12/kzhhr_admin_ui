@@ -1,17 +1,15 @@
 <template>
-  <v-card class="page-content mt-2"
+  <v-card class="page-content"
           flat>
-    <v-layout row
-              pa-2>
+    <v-layout row>
       <v-flex xs2
               text-xs-left><span class="authTitle">合同管理</span></v-flex>
       <v-spacer></v-spacer>
-      <v-flex sm2
+      <v-flex sm3
+              pt-3
               text-xs-right>
         <v-text-field v-model="keywords"
                       label="输入合同编号或客户名称查找"
-                      single-line
-                      hide-details
                       append-icon="search"
                       @keyup.enter="getContractList"></v-text-field>
       </v-flex>
@@ -76,21 +74,21 @@
           </template>
         </td>
         <td class="justify-center layout px-0">
-          <v-icon medium
+          <v-icon small
                   class="mr-2"
                   title="查看"
                   @click="showContractDetail(props.item.id)">
             remove_red_eye
           </v-icon>
           <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '081')"
-                  medium
+                  small
                   title="数据已接入"
                   color="warning"
                   @click="setCurContractstate(props.item.id, '081')">
             backup
           </v-icon>
           <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '091')"
-                  medium
+                  small
                   class="mr-2"
                   title="开票"
                   color="yellow"
@@ -98,14 +96,14 @@
             receipt
           </v-icon>
           <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '093')"
-                  medium
+                  small
                   title="收款"
                   color="warning"
                   @click="setCurContractstate(props.item.id, '093')">
             attach_money
           </v-icon>
           <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '099')"
-                  medium
+                  small
                   title="合同到期"
                   color="error"
                   @click="setCurContractstate(props.item.id, '099')">
@@ -169,7 +167,7 @@ export default {
         },
         { text: '客户名称', value: 'contractname', align: 'center', sortable: false },
         { text: '合同金额(元)', value: 'contractvalue', align: 'center', sortable: false },
-        { text: '建议收费(元)', value: 'recommendvalue', align: 'center', sortable: false },
+        { text: '年服务费(元)', value: 'recommendvalue', align: 'center', sortable: false },
         { text: '开始时间', value: 'contractstart', align: 'center', sortable: false },
         { text: '结束时间', value: 'contractend', align: 'center', sortable: false },
         { text: '签单人', value: 'username', align: 'center', sortable: false },

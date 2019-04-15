@@ -31,9 +31,9 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-tile v-for="(item, index) in items"
-                         :key="index"
-                         @click="triggerEvent(index)">
+            <v-list-tile v-for="item in getAdminItems(items)"
+                         :key="item.id"
+                         @click="triggerEvent(item)">
               <v-list-tile-title>{{ item.title }}</v-list-tile-title>
             </v-list-tile>
           </v-list>
@@ -46,14 +46,15 @@
 
 <script>
 import CoreView from '@/components/core/View'
+import { excuteApis } from '@/api'
 export default {
   name: 'App',
   data () {
     return {
       items: [
-        { title: '个人中心' },
-        { title: '用户管理' },
-        { title: '退出系统' }
+        { title: '个人中心', id: 'personal' },
+        { title: '用户管理', id: 'auth' },
+        { title: '退出系统', id: 'logout' }
       ],
       isLogined: false
     }
@@ -74,18 +75,29 @@ export default {
     path (pathname) {
       this.$router.push({ name: pathname })
     },
-    triggerEvent (index) {
-      switch (index) {
-        case 0:
+    triggerEvent (item) {
+      switch (item.id) {
+        case 'personal':
           this.$router.push({ name: 'personal' })
           break;
-        case 1:
+        case 'auth':
           this.$router.push({ name: 'auth' })
           break;
-        case 2:
-          this.$store.commit('setAuth', { user: {}, 'token': null })
+        case 'logout':
+          this.$store.dispatch('userAuthed', { user: {}, 'token': null })
           this.$router.push({ name: 'login' })
           break;
+      }
+    },
+    getAdminItems (items) {
+      let role = this.$store.state['user']['roleno']
+      if (role === 'ADMIN') {
+        return items
+      } else {
+        return [
+          { title: '个人中心', id: 'personal' },
+          { title: '退出系统', id: 'logout' }
+        ]
       }
     }
   },
@@ -94,10 +106,3 @@ export default {
   }
 }
 </script>
-<style>
-html,
-body {
-  overflow-y: hidden;
-}
-</style>
-

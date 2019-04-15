@@ -1,3 +1,6 @@
+import 'vuetify/dist/vuetify.min.css'
+import '@/styles/main.scss'
+
 import Vue from 'vue'
 import './plugins'
 import App from './App.vue'
@@ -8,9 +11,6 @@ import helper from './helper'
 global.helper = helper
 
 import './http'
-
-import 'vuetify/src/stylus/main.styl'
-import '@/styles/main.scss'
 
 import VModalDialog from './components/common/ModalDialog.vue'
 Vue.component('v-modaldialog', VModalDialog)
@@ -28,7 +28,7 @@ Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(r => r.meta.requireAuth)) {
-    if (store.state.token) {
+    if (global.helper.ls.get('x-kzhhr-token')) {
       // window.console.log(store.state.token)
       next()
     } else {
@@ -41,11 +41,37 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+import { excuteApis } from '@/api'
 new Vue({
+  data: { dicts: ['industry', 'transformer'] },
   router,
   store,
   render: h => h(App),
   created() {
-    this.$store.dispatch('checkAuth')
+    this.initDict()
+  },
+  methods: {
+    initDict() {
+      let promises = []
+      this.dicts.map(dict => {
+        promises.push(
+          excuteApis(
+            { dictname: dict },
+            global.config.adminApis,
+            'dict',
+            'index'
+          )
+        )
+      })
+      Promise.all(promises).then(response => {
+        this.dicts.map((dict, index) => {
+          this[dict] = response[index].data.data.data
+        })
+        this.$store.dispatch('dictsList', {
+          industry: this['industry'],
+          transformer: this['transformer']
+        })
+      })
+    }
   }
 }).$mount('#app')

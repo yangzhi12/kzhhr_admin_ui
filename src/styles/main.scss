@@ -8,6 +8,10 @@ html {
       font-size: 1rem;
     }
   }
+  .v-text-field {
+    padding-top: 0rem;
+    margin-top: 0rem;
+  }
   .input-group {
     label {
       font-size: 1rem;
@@ -36,12 +40,6 @@ html {
       white-space: nowrap;
     }
   }
-  // .el-input__inner {
-  //   border: 0px solid rgb(169, 169, 169);
-  //   // border-bottom-width: 1px;
-  //   border-radius: 0px;
-  //   border-color: rgb(169, 169, 169);
-  // }
   .table__overflow {
     border: 1px solid rgba(0, 0, 0, 0.12);
   }
@@ -60,16 +58,13 @@ html {
   .el-checkbox__inner {
     border: 1px solid #a19e9e;
   }
-  table.table {
-    tbody td,
-    tbody th,
-    thead td,
+  table.v-table {
+    tbody tr,
     thead {
       tr {
-        height: 3.5rem;
+        height: 2.5rem;
       }
-      th,
-      td {
+      th {
         background: #fbfbfb;
         color: #464a4c;
         font-weight: 600;
@@ -78,12 +73,11 @@ html {
         text-overflow: ellipsis;
         max-width: 14.28rem;
       }
+      td {
+        height: 2.5rem;
+      }
     }
   }
-  // li.subheader {
-  //   padding-left: 0rem;
-  //   margin-top: 1.28rem;
-  // }
   .breadcrumbs {
     padding-left: 0rem;
     margin-left: 2.15rem;
@@ -106,10 +100,6 @@ html {
         }
       }
     }
-  }
-  .table-header {
-    color: #000 !important;
-    font-weight: bold !important;
   }
   .custom-tree-node {
     flex: 1;

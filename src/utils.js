@@ -1,3 +1,4 @@
+import store from './store'
 /**
 *
 判断一个对象是否为数组,缺省
@@ -553,7 +554,7 @@ function getApproveFlow(flowno) {
           id: '031',
           name: '评审通过(合同)',
           isbtns: ['051', '052'],
-          isprivilege: ['ADMIN', 'LAW']
+          isprivilege: ['ADMIN', 'TECHNICAL']
         },
         '032': {
           id: '032',
@@ -563,31 +564,31 @@ function getApproveFlow(flowno) {
         }
       }
     },
-    '05': {
-      id: '05',
-      parent: '030',
-      next: '080',
-      subflows: {
-        '050': {
-          id: '050',
-          name: '评审中(法务)',
-          isbtns: ['051', '052'],
-          isprivilege: ['ADMIN', 'LAW']
-        },
-        '051': {
-          id: '051',
-          name: '评审通过(法务)',
-          isbtns: ['081'],
-          isprivilege: ['ADMIN', 'FINANCE']
-        },
-        '052': {
-          id: '052',
-          name: '评审未通过(法务)',
-          isbtns: ['051'],
-          isprivilege: ['ADMIN', 'LAW']
-        }
-      }
-    },
+    // '05': {
+    //   id: '05',
+    //   parent: '030',
+    //   next: '080',
+    //   subflows: {
+    //     '050': {
+    //       id: '050',
+    //       name: '评审中(法务)',
+    //       isbtns: ['051', '052'],
+    //       isprivilege: ['ADMIN', 'LAW']
+    //     },
+    //     '051': {
+    //       id: '051',
+    //       name: '评审通过(法务)',
+    //       isbtns: ['081'],
+    //       isprivilege: ['ADMIN', 'FINANCE']
+    //     },
+    //     '052': {
+    //       id: '052',
+    //       name: '评审未通过(法务)',
+    //       isbtns: ['051'],
+    //       isprivilege: ['ADMIN', 'LAW']
+    //     }
+    //   }
+    // },
     '08': {
       id: '08',
       parent: '070',
@@ -692,40 +693,12 @@ function getVoltage(voltageno) {
 }
 
 // 变压器容量
-function getTransformer(transformer) {
-  let transformers = {
-    '00': {
-      id: '00',
-      name: 630,
-      unit: 'kVA',
-      base: 500
-    },
-    '01': {
-      id: '01',
-      name: 1000,
-      unit: 'kVA',
-      base: 800
-    },
-    '02': {
-      id: '02',
-      name: 1600,
-      unit: 'kVA',
-      base: 1200
-    },
-    '03': {
-      id: '03',
-      name: 2500,
-      unit: 'kVA',
-      base: 2000
-    },
-    '04': {
-      id: '04',
-      name: 2501,
-      unit: 'kVA',
-      base: 3500
-    }
-  }
-  return transformers[transformer]
+function getTransformer(transformerno) {
+  let transformers = store.state['transformer']
+  let transformer = transformers.filter(item => {
+    return `${item.transformerno}` === `${transformerno}`
+  })
+  return transformer[0]
 }
 
 // 服务方案
@@ -817,33 +790,11 @@ function getServiceType(typeno) {
 
 // 行业分类
 function getIndustry(industryno) {
-  let industrys = {
-    '00': {
-      id: '00',
-      name: '居民',
-      industryratio: 1.7,
-      usehuours: 2500,
-      powerratio: 0.8,
-      unitprice: 0.42
-    },
-    '01': {
-      id: '01',
-      name: '一般工商业',
-      industryratio: 1.2,
-      usehuours: 5000,
-      powerratio: 0.8,
-      unitprice: 0.7
-    },
-    '02': {
-      id: '02',
-      name: '大工业',
-      industryratio: 1.4,
-      usehuours: 5000,
-      powerratio: 0.8,
-      unitprice: 0.55
-    }
-  }
-  return industrys[industryno]
+  let industrys = store.state['industry']
+  let curindustry = industrys.filter(item => {
+    return `${item.industryno}` === `${industryno}`
+  })
+  return curindustry[0]
 }
 
 // 逗号分隔金额
@@ -863,6 +814,13 @@ function getCommaMoney(s, type) {
     }
   }
   return s
+}
+
+// 获取角色权限
+function isRoleBtnsVisible() {
+  if (!role) return false
+  let role = store.state['user']['roleno']
+  return ['ADMIN', 'CONTRACT'].includes(role)
 }
 
 export {
@@ -895,5 +853,6 @@ export {
   getServiceType,
   getServiceItem,
   getIndustry,
-  getCommaMoney
+  getCommaMoney,
+  isRoleBtnsVisible
 }

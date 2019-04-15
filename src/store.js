@@ -8,6 +8,7 @@ const store = new Vuex.Store({
     pageTitle: 'Home',
     user: {},
     token: null,
+    industry: null,
     message: {
       type: null,
       body: null
@@ -18,8 +19,6 @@ const store = new Vuex.Store({
     setAuth(state, { user, token }) {
       state.user = user
       state.token = token
-      global.helper.ls.set('user', user)
-      global.helper.ls.set('x-kzhhr-token', token)
     },
     setMenu(state, data) {
       state.menu = data
@@ -29,15 +28,25 @@ const store = new Vuex.Store({
     },
     showMessage(state, type, body) {
       state.message = { type, body }
+    },
+    setIndustry(state, data) {
+      state.industry = data
+    },
+    setTransformer(state, data) {
+      state.transformer = data
     }
   },
   actions: {
-    checkAuth({ commit }) {
-      let data = {
-        user: global.helper.ls.get('user'),
-        token: global.helper.ls.get('x-kzhhr-token')
-      }
+    userAuthed({ commit }, data) {
+      let { user, token } = data
+      global.helper.ls.set('user', user)
+      global.helper.ls.set('x-kzhhr-token', token)
       commit('setAuth', data)
+    },
+    dictsList({ commit }, data) {
+      let { industry, transformer } = data
+      industry ? commit('setIndustry', industry) : null
+      transformer ? commit('setTransformer', transformer) : null
     },
     checkPageTitle({ commit, state }, path) {
       for (let k in state.menu) {

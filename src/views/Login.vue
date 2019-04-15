@@ -25,6 +25,7 @@
                             required
                             autocomplete="off"
                             disableautocomplete
+                            maxlength="11"
                             autofocus></v-text-field>
               <v-text-field v-model="password"
                             prepend-icon="lock"
@@ -35,7 +36,9 @@
                             :type="visibility ? 'text' : 'password'"
                             required
                             autocomplete="off"
-                            disableautocomplete></v-text-field>
+                            disableautocomplete
+                            maxlength="11"
+                            @keyup.enter="login"></v-text-field>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -88,7 +91,7 @@ export default {
                   this.errorMsg = res.errmsg
                 } else {
                   this.errorMsg = ''
-                  this.$store.commit('setAuth', { user: res.data.userInfo, token: res.data.token })
+                  this.$store.dispatch('userAuthed', { user: res.data.userInfo, token: res.data.token })
                   this.$router.replace('/')
                 }
               }

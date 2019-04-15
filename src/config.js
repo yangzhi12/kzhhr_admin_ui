@@ -1,5 +1,5 @@
-// const baseUrl = 'http://localhost:8360'
-const baseUrl = ''
+const baseUrl = 'http://localhost:8360'
+// const baseUrl = ''
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
   url: baseUrl,
@@ -38,6 +38,9 @@ const config = {
       info: { url: '/info', method: 'get' },
       state: { url: '/state', method: 'post' },
       fee: { url: '/fee', method: 'post' }
+    },
+    dict: {
+      index: { url: '/index', method: 'post' }
     }
   },
   level: {

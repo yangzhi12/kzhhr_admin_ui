@@ -1,18 +1,15 @@
 <template>
-  <v-card class="page-content mt-2"
+  <v-card class="page-content"
           flat>
-    <v-layout row
-              pa-2>
+    <v-layout row>
       <v-flex sm2
               text-xs-left><span class="memberTitle">合伙人管理</span></v-flex>
       <v-spacer></v-spacer>
-      <v-flex sm2
-              text-xs-right>
+      <v-flex sm3
+              pt-3>
         <v-text-field v-model="keywords"
-                      label="输入手机号或名字查找"
-                      single-line
-                      hide-details
                       append-icon="search"
+                      label="输入用户名或手机号查找"
                       @keyup.enter="getMemberList"></v-text-field>
       </v-flex>
       <v-flex sm2
@@ -120,18 +117,21 @@
           <v-icon small
                   class="mr-2"
                   title="编辑"
+                  v-if="getRoleBtns()"
                   @click="editCurmember(props.item.id)">
             edit
           </v-icon>
           <v-icon small
                   title="删除"
                   color="error"
+                  v-if="getRoleBtns()"
                   @click="deleteCurmember(props.item.id)">
             delete
           </v-icon>
           <v-icon small
                   title="密码重置"
                   class="ml-2 mr-2"
+                  v-if="getRoleBtns()"
                   @click="resetPasswordCurmember(props.item.id)">
             lock
           </v-icon>
@@ -177,7 +177,7 @@
 
 <script>
 import { excuteApis } from '@/api'
-import { parseTime, getIdInvisible, getMobileInvisible } from '@/utils'
+import { parseTime, getIdInvisible, getMobileInvisible, isRoleBtnsVisible } from '@/utils'
 import VMemberInfoView from './member/MemberInfoView.vue'
 import VMemberAddOrEdit from './member/MemberAddOrEdit.vue'
 
@@ -386,6 +386,9 @@ export default {
     },
     getMobile (mobile) {
       return getMobileInvisible(mobile)
+    },
+    getRoleBtns () {
+      return isRoleBtnsVisible()
     }
   },
   created () {
