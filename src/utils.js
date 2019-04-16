@@ -818,8 +818,8 @@ function getCommaMoney(s, type) {
 
 // 获取角色权限
 function isRoleBtnsVisible() {
-  if (!role) return false
   let role = store.state['user']['roleno']
+  if (!role) return false
   return ['ADMIN', 'CONTRACT'].includes(role)
 }
 

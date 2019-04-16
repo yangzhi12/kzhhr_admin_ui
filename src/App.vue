@@ -46,7 +46,6 @@
 
 <script>
 import CoreView from '@/components/core/View'
-import { excuteApis } from '@/api'
 export default {
   name: 'App',
   data () {

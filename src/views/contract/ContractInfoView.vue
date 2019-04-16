@@ -9,10 +9,10 @@
         <div class="baseInfo">
           <div class="baseInfoTitle">
             <span class="titleInner"> 合同信息 </span>
-            <div style="float: right;margin-right: 20px;">
+            <!-- <div style="float: right;margin-right: 20px;">
               <span v-if="contract.recommendvalue"
                     style="padding-right: 100px;">建议收费：<span style=" color: red">{{ getMoney(contract.recommendvalue) || '--'}} </span>元</span>
-            </div>
+            </div> -->
           </div>
           <div class="baseInfoContent">
             <v-layout row
@@ -30,7 +30,7 @@
                   </v-flex>
                   <v-flex xs4>
                     <span class="infolabel">合同金额: </span>
-                    <span>{{ getMoney(contract.contractvalue) || '--' }} 元</span>
+                    <span>{{ getMoney(contract.contractvalue) || '--' }} 元（<span style="color:red;">{{getMoney(contract.recommendvalue)}}元/年</span>）</span>
                     <!-- <span style="cursor: pointer; margin-left: 20px; color: green;"
                           @click="getContractFee">核算</span> -->
                   </v-flex>
