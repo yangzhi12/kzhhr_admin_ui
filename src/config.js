@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8360'
+const baseUrl = 'http://192.168.2.11:8360'
 // const baseUrl = ''
 const config = {
   locale: 'zh-CN', // en-US, zh-CN

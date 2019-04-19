@@ -96,6 +96,10 @@ export function CContract(contract) {
     contract && contract.hasOwnProperty('recommendvalue')
       ? contract.recommendvalue
       : null
+  this.attachments =
+    contract && contract.hasOwnProperty('attachments')
+      ? contract.attachments
+      : []
 }
 
 CContract.prototype.getId = function() {
@@ -328,4 +332,12 @@ CContract.prototype.getRecommendvalue = function() {
 
 CContract.prototype.setRecommendvalue = function(recommendvalue) {
   this.recommendvalue = recommendvalue
+}
+
+CContract.prototype.getAttachments = function() {
+  return this.attachments
+}
+
+CContract.prototype.setAttachments = function(attachments) {
+  this.attachments = attachments
 }

@@ -19,7 +19,9 @@ export default {
       timeout: 6000,
       snackbarContent: '',
       fee: 0.0,
-      recommendfee: 0.0
+      recommendfee: 0.0,
+      attachments000: [],
+      attachments010: []
     }
   },
   methods: {
@@ -199,6 +201,15 @@ export default {
             ? resContract.recommendvalue
             : null
         )
+        this.contract.setAttachments(
+          resContract.hasOwnProperty('attachments')
+            ? resContract.attachments
+            : null
+        )
+        // 附件信息处理
+        let attachments = this.contract.getAttachments('attachments')
+        this.attachments000 = this.getContractAttachments(attachments, 0)
+        this.attachments010 = this.getContractAttachments(attachments, 10)
       }
     },
     getApproveFlowName(flowno) {
@@ -260,7 +271,7 @@ export default {
           window.console.log(error)
         }
       }
-    }
+    },
     // getContractFee() {
     //   let industry = this.contract.getIndustry()
     //   let transformer = this.contract.getTransformer()
@@ -297,5 +308,20 @@ export default {
     //     }
     //   }
     // }
+    getContractAttachments(attachments, type) {
+      // 获取合同附件，type： 000-合同扫描件 010-电气主接线图
+      let attachment = []
+      if (attachments && attachments.length > 0) {
+        attachment = attachments.filter(item => {
+          return Number(item.category) == Number(type)
+        })
+        return attachment
+      } else {
+        return attachment
+      }
+    },
+    viewimage(imgurl) {
+      window.open(imgurl)
+    }
   }
 }

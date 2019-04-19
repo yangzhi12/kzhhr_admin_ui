@@ -84,6 +84,44 @@
                 </v-layout>
               </v-flex>
             </v-layout>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel">合同扫描件: </span>
+              </v-flex>
+              <v-flex xs10></v-flex>
+            </v-layout>
+            <v-layout row
+                      wrap>
+              <v-flex xs2></v-flex>
+              <template v-for="item in attachments000">
+                <v-flex xs2
+                        :key="item.id">
+                  <img class="imagecontainer"
+                       title="点击看大图"
+                       :src="item.downloadurl"
+                       @click="viewimage(item.downloadurl)" />
+                </v-flex>
+              </template>
+            </v-layout>
+            <v-layout row>
+              <v-flex xs2>
+                <span class="infolabel">电气主接线图: </span>
+              </v-flex>
+              <v-flex xs10></v-flex>
+            </v-layout>
+            <v-layout row
+                      wrap>
+              <v-flex xs2></v-flex>
+              <template v-for="item in attachments010">
+                <v-flex xs2
+                        :key="item.id">
+                  <img class="imagecontainer"
+                       title="点击看大图"
+                       :src="item.downloadurl"
+                       @click="viewimage(item.downloadurl)" />
+                </v-flex>
+              </template>
+            </v-layout>
           </div>
         </div>
         <div class="baseInfo">
@@ -431,5 +469,9 @@ export default {
 .infolabel {
   line-height: 30px;
   height: 20px;
+}
+.imagecontainer {
+  height: 100px;
+  width: 100px;
 }
 </style>
