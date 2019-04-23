@@ -37,7 +37,16 @@ const config = {
       list: { url: '/index', method: 'post' },
       info: { url: '/info', method: 'get' },
       state: { url: '/state', method: 'post' },
-      fee: { url: '/fee', method: 'post' }
+      fee: { url: '/fee', method: 'post' },
+      level: { url: '/levelcontract', method: 'post' }
+    },
+    share: {
+      list: { url: '/index', method: 'post' },
+      level: { url: '/levelshare', method: 'post' }
+    },
+    train: {
+      list: { url: '/index', method: 'post' },
+      level: { url: '/leveltrain', method: 'post' }
     },
     dict: {
       index: { url: '/index', method: 'post' }

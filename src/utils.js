@@ -811,6 +811,19 @@ function isRoleBtnsVisible() {
   return ['ADMIN', 'CONTRACT'].includes(role)
 }
 
+// 获取本年季度起止日期
+function getQuarter(year, quarterno) {
+  let startdate = new Date(`${year}-${(quarterno - 1) * 3 + 1}-1`)
+  let enddate =
+    quarterno === 4
+      ? new Date(`${year + 1}-1-1`)
+      : new Date(`${year}-${quarterno * 3 + 1}-1`)
+  return Object.assign(
+    {},
+    { startdate: startdate.getTime(), enddate: enddate.getTime() }
+  )
+}
+
 export {
   isArray,
   hasKey,
@@ -842,5 +855,6 @@ export {
   getServiceItem,
   getIndustry,
   getCommaMoney,
-  isRoleBtnsVisible
+  isRoleBtnsVisible,
+  getQuarter
 }
