@@ -192,30 +192,110 @@
               </v-flex>
             </v-layout>
           </v-flex>
-          <v-flex xs6>{{title.name}}
-            <div v-if="title.id === 'standarone'">
-              <!-- <template v-for="contract in contracts"> -->
-              <v-layout row
-                        :key="contract">
-                <v-flex xs6>合同编号：</v-flex>
-                <v-flex xs6></v-flex>
-              </v-layout>
-              <v-layout row
-                        :key="contract">
-                <v-flex xs6>客户名称：</v-flex>
-                <v-flex xs6></v-flex>
-              </v-layout>
-              <v-layout row
-                        :key="contract">
-                <v-flex xs6>合同金额：</v-flex>
-                <v-flex xs6></v-flex>
-              </v-layout>
-              <v-layout row
-                        :key="contract">
-                <v-flex xs6>起止时间：</v-flex>
-                <v-flex xs6></v-flex>
-              </v-layout>
-              <!-- </template> -->
+          <v-flex xs6
+                  ml-2
+                  mr-2>
+            <div class="pageRight">
+              <v-layout row>{{title.name}}</v-layout>
+              <div v-if="title.id === 'standarone'"
+                   class="standarcontainer">
+                <template v-for="contract in contracts">
+                  <div class="standarcontent"
+                       :key="contract.id">
+                    <v-layout row>
+                      <v-flex xs12>
+                        <span>合同编号：</span>
+                        <span>{{contract.contractno}}</span>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row>
+                      <v-flex xs12>
+                        <span>客户名称：</span>
+                        <span>{{contract.contractname}}</span>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row>
+                      <v-flex xs12>
+                        <span>合同金额：</span>
+                        <span>{{contract.contractvalue}}&nbsp;&nbsp;元</span>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row>
+                      <v-flex xs12>
+                        <span>起止时间：</span>
+                        <span>{{getFormtedTime(contract.contractstart)}}&nbsp;&nbsp;至&nbsp;&nbsp;{{getFormtedTime(contract.contractend)}}</span>
+                      </v-flex>
+                    </v-layout>
+                  </div>
+                </template>
+              </div>
+              <div v-if="title.id === 'standarthree'"
+                   class="standarcontainer">
+                <template v-for="train in trains">
+                  <div class="standarcontent"
+                       :key="train.id + '_train'">
+                    <v-layout row>
+                      <v-flex xs12>
+                        <v-layout row>
+                          <template v-for="attachment in train.attachments">
+                            <div :key="attachment.id"
+                                 class="levelimagecontainer">
+                              <v-flex xs4>
+                                <img class="levelImage"
+                                     :src="attachment.downloadurl" />
+                              </v-flex>
+                            </div>
+                          </template>
+                        </v-layout>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row>
+                      <v-flex xs12>
+                        <span>培训位置：</span>
+                        <span>{{train.address}}</span>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row>
+                      <v-flex xs12>
+                        <span>培训时间：{{getFormtedTime(train.createtime)}}&nbsp;&nbsp;</span>
+                        <span>参与人数：{{train.peoples}}人</span>
+                      </v-flex>
+                    </v-layout>
+                  </div>
+                </template>
+                <template v-for="share in shares">
+                  <div class="standarcontent"
+                       :key="share.id + '_share'">
+                    <v-layout row>
+                      <v-flex xs12>
+                        <v-layout row>
+                          <template v-for="attachment in share.attachments">
+                            <div :key="attachment.id"
+                                 class="levelimagecontainer">
+                              <v-flex xs4>
+                                <img class="levelImage"
+                                     :src="attachment.downloadurl" />
+                              </v-flex>
+                            </div>
+                          </template>
+                        </v-layout>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row>
+                      <v-flex xs12>
+                        <span>分享位置：</span>
+                        <span>{{share.address}}</span>
+                      </v-flex>
+                    </v-layout>
+                    <v-layout row>
+                      <v-flex xs12>
+                        <span>分享时间：{{getFormtedTime(share.createtime)}}&nbsp;&nbsp;</span>
+                        <span>参与人数：{{share.peoples}}人</span>
+                      </v-flex>
+                    </v-layout>
+                  </div>
+                </template>
+              </div>
             </div>
           </v-flex>
         </v-layout>
@@ -239,19 +319,19 @@ export default {
       titles: {
         standarone: {
           id: 'standarone',
-          name: '自签站点数'
+          name: '自签站点'
         },
         standartwo: {
           id: 'standartwo',
-          name: '拓展数及团队站点数'
+          name: '拓展及团队'
         },
         standarthree: {
           id: 'standarthree',
-          name: '培训及分享次数'
+          name: '培训及分享'
         },
         standarfour: {
           id: 'standarfour',
-          name: '老客户流失数'
+          name: '流失的老客户'
         }
       },
       title: '',
@@ -268,7 +348,10 @@ export default {
         ok: true
       },
       keywords: '',
-      curmember: 0
+      curmember: 0,
+      contracts: [],
+      shares: [],
+      trains: []
     }
   },
   watch: {},
@@ -389,21 +472,31 @@ export default {
     },
     showLevel (member) {
       this.curmember = member
-    },
-    showDetail (title) {
-      if (!title) return
-      this.title = this.titles[title]
       // 根据用户id查询合同信息
       let userid = this.curmember.id
       // 合同起止时间
       let quarter = getQuarter(2019, 2)
       let params = Object.assign({}, { userid: userid, startdate: quarter.startdate, enddate: quarter.enddate })
       let requests = [
-        excuteApis(params, global.config.adminApis, 'contract', 'level')
+        excuteApis(params, global.config.adminApis, 'contract', 'level'),
+        excuteApis(params, global.config.adminApis, 'share', 'level'),
+        excuteApis(params, global.config.adminApis, 'train', 'level'),
       ]
       Promise.all(requests).then(res => {
-
+        if (res[0].data && res[0].data.data) {
+          this.contracts = res[0].data.data
+        }
+        if (res[1].data && res[1].data.data) {
+          this.shares = res[1].data.data
+        }
+        if (res[2].data && res[2].data.data) {
+          this.trains = res[2].data.data
+        }
       })
+    },
+    showDetail (title) {
+      if (!title) return
+      this.title = this.titles[title]
     }
   },
   created () {
@@ -417,6 +510,10 @@ export default {
 .pageLeft {
   border-right: 1px solid #f4f4f4;
 }
+.pageRight {
+  margin-left: 10rpx;
+  margin-right: 10rpx;
+}
 .tablelist {
   height: 480px;
   overflow-y: hidden;
@@ -428,5 +525,26 @@ export default {
   padding-top: 10px;
   padding-bottom: 10px;
   cursor: pointer;
+}
+.standarcontainer {
+  border: 1px solid #f4f4f4;
+  margin-top: 10px;
+  padding: 10px 10px;
+  height: 540px;
+  overflow-y: hidden;
+  overflow-y: scroll;
+}
+.standarcontent {
+  background-color: rgba(244, 244, 244, 0.3);
+  padding: 15px 15px;
+  margin-bottom: 3px;
+}
+.levelimagecontainer {
+  padding: 2px 2px;
+  margin: 1px 1px;
+}
+.levelImage {
+  width: 80px;
+  height: 80px;
 }
 </style>

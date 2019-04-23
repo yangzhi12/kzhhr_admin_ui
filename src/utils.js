@@ -820,7 +820,10 @@ function getQuarter(year, quarterno) {
       : new Date(`${year}-${quarterno * 3 + 1}-1`)
   return Object.assign(
     {},
-    { startdate: startdate.getTime(), enddate: enddate.getTime() }
+    {
+      startdate: parseInt(startdate.getTime() / 1000),
+      enddate: parseInt(enddate.getTime() / 1000)
+    }
   )
 }
 
