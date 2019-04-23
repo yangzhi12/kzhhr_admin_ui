@@ -80,33 +80,33 @@
                   @click="showContractDetail(props.item.id)">
             remove_red_eye
           </v-icon>
-          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '081')"
+          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '051')"
                   small
                   title="数据已接入"
                   color="warning"
-                  @click="setCurContractstate(props.item.id, '081')">
+                  @click="setCurContractstate(props.item.id, '051')">
             backup
           </v-icon>
-          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '091')"
+          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '071')"
                   small
                   class="mr-2"
                   title="开票"
                   color="yellow"
-                  @click="setCurContractstate(props.item.id, '091')">
+                  @click="setCurContractstate(props.item.id, '071')">
             receipt
           </v-icon>
-          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '093')"
+          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '073')"
                   small
                   title="收款"
                   color="warning"
-                  @click="setCurContractstate(props.item.id, '093')">
+                  @click="setCurContractstate(props.item.id, '073')">
             attach_money
           </v-icon>
-          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '099')"
+          <v-icon v-if="isStateBtnsVisible(props.item.contractstate, '082')"
                   small
                   title="合同到期"
                   color="error"
-                  @click="setCurContractstate(props.item.id, '099')">
+                  @click="setCurContractstate(props.item.id, '082')">
             remove_circle
           </v-icon>
         </td>

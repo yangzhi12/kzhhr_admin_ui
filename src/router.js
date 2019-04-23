@@ -42,9 +42,9 @@ export default new Router({
       }
     },
     {
-      path: '/dataaccess',
-      name: 'dataaccess',
-      component: () => import('./views/DataAccess.vue'),
+      path: '/levelset',
+      name: 'levelset',
+      component: () => import('./views/Levelset.vue'),
       meta: {
         requireAuth: true
       }

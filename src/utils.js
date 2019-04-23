@@ -553,7 +553,7 @@ function getApproveFlow(flowno) {
         '031': {
           id: '031',
           name: '评审通过(合同)',
-          isbtns: ['051', '052'],
+          isbtns: ['051'],
           isprivilege: ['ADMIN', 'TECHNICAL']
         },
         '032': {
@@ -564,90 +564,78 @@ function getApproveFlow(flowno) {
         }
       }
     },
-    // '05': {
-    //   id: '05',
-    //   parent: '030',
-    //   next: '080',
-    //   subflows: {
-    //     '050': {
-    //       id: '050',
-    //       name: '评审中(法务)',
-    //       isbtns: ['051', '052'],
-    //       isprivilege: ['ADMIN', 'LAW']
-    //     },
-    //     '051': {
-    //       id: '051',
-    //       name: '评审通过(法务)',
-    //       isbtns: ['081'],
-    //       isprivilege: ['ADMIN', 'FINANCE']
-    //     },
-    //     '052': {
-    //       id: '052',
-    //       name: '评审未通过(法务)',
-    //       isbtns: ['051'],
-    //       isprivilege: ['ADMIN', 'LAW']
-    //     }
-    //   }
-    // },
-    '08': {
-      id: '08',
-      parent: '070',
-      next: '090',
+    '05': {
+      id: '05',
+      parent: '031',
+      next: '070',
       subflows: {
-        '080': {
-          id: '080',
+        '050': {
+          id: '050',
           name: '数据接入中',
-          isbtns: ['081'],
+          isbtns: ['051'],
           isprivilege: ['ADMIN', 'TECHNICAL']
         },
-        '081': {
-          id: '081',
+        '051': {
+          id: '051',
           name: '数据已接入',
-          isbtns: ['091'],
+          isbtns: ['070'],
           isprivilege: ['ADMIN', 'FINANCE']
         }
       }
     },
-    '09': {
-      id: '09',
-      parent: '080',
-      next: null,
+    '07': {
+      id: '07',
+      parent: '051',
+      next: '080',
       subflows: {
-        '090': {
-          id: '090',
+        '070': {
+          id: '070',
           name: '开票中',
-          isbtns: ['091'],
+          isbtns: ['071'],
           isprivilege: ['ADMIN', 'FINANCE']
         },
-        '091': {
-          id: '091',
+        '071': {
+          id: '071',
           name: '已开票',
-          isbtns: ['092'],
+          isbtns: ['072'],
           isprivilege: ['ADMIN', 'FINANCE']
         },
-        '092': {
-          id: '092',
+        '072': {
+          id: '072',
           name: '打款中',
-          isbtns: ['093'],
+          isbtns: ['073'],
           isprivilege: ['ADMIN', 'FINANCE']
         },
-        '093': {
-          id: '093',
+        '073': {
+          id: '073',
           name: '款已到',
           isbtns: [],
           isprivilege: ['ADMIN', 'FINANCE']
-        },
-        '094': {
-          id: '094',
+        }
+      }
+    },
+    '08': {
+      id: '08',
+      parent: '073',
+      next: null,
+      subflows: {
+        '080': {
+          id: '080',
           name: '服务中',
-          isbtns: ['099'],
+          isbtns: ['082'],
           isprivilege: ['ADMIN', 'BUSINESS']
         },
-        '099': {
-          id: '099',
+        '081': {
+          id: '081',
+          name: '合同中止',
+          isbtns: [],
+          isprivilege: ['ADMIN', 'BUSINESS']
+        },
+        '082': {
+          id: '082',
           name: '合同到期',
           isbtns: [],
-          isprivilege: ['ADMIN']
+          isprivilege: ['ADMIN', 'BUSINESS']
         }
       }
     }

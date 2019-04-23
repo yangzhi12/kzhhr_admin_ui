@@ -14,7 +14,7 @@
         <v-btn flat
                @click="path('contract')">合同管理</v-btn>
         <v-btn flat
-               @click="path('dataaccess')">数据接入</v-btn>
+               @click="path('levelset')">钻级评定</v-btn>
         <v-btn flat
                @click="path('accounts')">收益结算</v-btn>
         <v-btn flat
