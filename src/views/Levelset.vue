@@ -123,7 +123,7 @@
                 <v-flex xs6
                         text-xs-right>自签站点数（个）：</v-flex>
                 <v-flex xs6
-                        text-xs-left>0</v-flex>
+                        text-xs-left>{{contracts.length}}</v-flex>
               </v-layout>
             </div>
             <div class="standard"
@@ -149,11 +149,11 @@
                 <v-flex xs4
                         text-xs-right>培训次数（次）：</v-flex>
                 <v-flex xs2
-                        text-xs-left>0</v-flex>
+                        text-xs-left>{{trains.length}}</v-flex>
                 <v-flex xs4
                         text-xs-right>分享次数（次）：</v-flex>
                 <v-flex xs2
-                        text-xs-left>0</v-flex>
+                        text-xs-left>{{shares.length}}</v-flex>
               </v-layout>
             </div>
             <div class="standard"
@@ -229,6 +229,58 @@
                   </div>
                 </template>
               </div>
+              <div v-if="title.id === 'standartwo'"
+                   class="standarcontainer">
+                <div class="member">
+                  <div class="levelcontainer">
+                    <div class="level rootmember">
+                      <div class="leveltext">{{relation.username}}</div>
+                      <div class="leveltext levelsubtext">({{relation.levelname}})</div>
+                    </div>
+                  </div>
+                  <div class="levelcontainer"
+                       v-for="item in relation.children"
+                       :key="item.id">
+                    <div class="navline0"></div>
+                    <div class="level">
+                      <div class="levelh"></div>
+                      <div class="leveltext">{{item.username}}</div>
+                      <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                    </div>
+                    <div class="levelcontainer"
+                         v-for="item in item.children"
+                         :key="item.id">
+                      <div class="navline1"></div>
+                      <div class="level">
+                        <div class="levelh"></div>
+                        <div class="leveltext">{{item.username}}</div>
+                        <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                      </div>
+                      <div class="levelcontainer"
+                           v-for="item in item.children"
+                           :key="item.id">
+                        <div class="navline1"></div>
+                        <div class="level">
+                          <div class="levelh"></div>
+                          <div class="leveltext">{{item.username}}</div>
+                          <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                        </div>
+                        <div class="levelcontainer"
+                             v-for="item in item.children"
+                             :key="item.id">
+                          <div class="navline1"></div>
+                          <div class="level">
+                            <div class="levelh"></div>
+                            <div class="leveltext">{{item.username}}</div>
+                            <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div>团队签单</div>
+              </div>
               <div v-if="title.id === 'standarthree'"
                    class="standarcontainer">
                 <template v-for="train in trains">
@@ -251,7 +303,7 @@
                     </v-layout>
                     <v-layout row>
                       <v-flex xs12>
-                        <span>培训位置：</span>
+                        <span>所在位置：</span>
                         <span>{{train.address}}</span>
                       </v-flex>
                     </v-layout>
@@ -283,7 +335,7 @@
                     </v-layout>
                     <v-layout row>
                       <v-flex xs12>
-                        <span>分享位置：</span>
+                        <span>所在位置：</span>
                         <span>{{share.address}}</span>
                       </v-flex>
                     </v-layout>
@@ -309,7 +361,7 @@
 
 <script>
 import { excuteApis } from '@/api'
-import { parseTime, getIdInvisible, getMobileInvisible, isRoleBtnsVisible, getQuarter } from '@/utils'
+import { parseTime, getIdInvisible, getMobileInvisible, isRoleBtnsVisible, getQuarter, traverseNodes } from '@/utils'
 import { Promise } from 'q';
 
 export default {
@@ -351,7 +403,9 @@ export default {
       curmember: 0,
       contracts: [],
       shares: [],
-      trains: []
+      trains: [],
+      teams: [],
+      relation: null
     }
   },
   watch: {},
@@ -481,6 +535,7 @@ export default {
         excuteApis(params, global.config.adminApis, 'contract', 'level'),
         excuteApis(params, global.config.adminApis, 'share', 'level'),
         excuteApis(params, global.config.adminApis, 'train', 'level'),
+        excuteApis(params, global.config.adminApis, 'contract', 'team'),
       ]
       Promise.all(requests).then(res => {
         if (res[0].data && res[0].data.data) {
@@ -492,11 +547,23 @@ export default {
         if (res[2].data && res[2].data.data) {
           this.trains = res[2].data.data
         }
+        if (res[3].data && res[3].data.data) {
+          this.teams = res[3].data.data
+          this.reduceTeam(userid, this.teams)
+        }
       })
     },
     showDetail (title) {
       if (!title) return
       this.title = this.titles[title]
+    },
+    reduceTeam (userid, teams) {
+      // 设置根节点
+      let root = teams.filter((item) => {
+        return item.id === userid
+      })
+      let tree = traverseNodes(root, teams)
+      this.relation = tree[0]
     }
   },
   created () {
@@ -511,8 +578,8 @@ export default {
   border-right: 1px solid #f4f4f4;
 }
 .pageRight {
-  margin-left: 10rpx;
-  margin-right: 10rpx;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 .tablelist {
   height: 480px;
@@ -535,9 +602,9 @@ export default {
   overflow-y: scroll;
 }
 .standarcontent {
-  background-color: rgba(244, 244, 244, 0.3);
-  padding: 15px 15px;
-  margin-bottom: 3px;
+  background-color: rgba(244, 244, 244, 0.5);
+  padding: 5px 5px;
+  margin-bottom: 5px;
 }
 .levelimagecontainer {
   padding: 2px 2px;
@@ -546,5 +613,48 @@ export default {
 .levelImage {
   width: 80px;
   height: 80px;
+}
+.member {
+}
+.levelcontainer {
+  position: relative;
+  margin-left: 10px;
+}
+.levelcontainer .navline0 {
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  left: 20px;
+  top: -15px;
+  z-index: 2;
+  border-left: 1px dashed #1982c2;
+}
+.levelcontainer .navline1 {
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  top: -15px;
+  left: 22px;
+  z-index: 2;
+  border-left: 1px dashed #1982c2;
+}
+.levelcontainer .level {
+  position: relative;
+  display: flex;
+  direction: row;
+  justify-content: start;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.levelcontainer .level .levelh {
+  border-bottom: 1px dashed #1982c2;
+  width: 20px;
+  height: 1px;
+  margin-left: 22px;
+  margin-top: 10px;
+}
+.levelcontainer .level .levelsubtext {
+  /* font-size: 26px; */
+  color: rgba(51, 51, 51, 0.5);
 }
 </style>

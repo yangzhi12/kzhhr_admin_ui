@@ -1,4 +1,4 @@
-const baseUrl = 'http://127.0.0.1:8360'
+const baseUrl = 'http://localhost:8360'
 // const baseUrl = ''
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
@@ -38,7 +38,8 @@ const config = {
       info: { url: '/info', method: 'get' },
       state: { url: '/state', method: 'post' },
       fee: { url: '/fee', method: 'post' },
-      level: { url: '/levelcontract', method: 'post' }
+      level: { url: '/levelcontract', method: 'post' },
+      team: { url: '/teamindex', method: 'post' }
     },
     share: {
       list: { url: '/index', method: 'post' },

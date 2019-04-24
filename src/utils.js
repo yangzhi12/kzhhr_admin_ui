@@ -827,6 +827,19 @@ function getQuarter(year, quarterno) {
   )
 }
 
+// 遍历树
+function traverseNodes(curnodes, nodes) {
+  let tree = curnodes.map((node, index) => {
+    let childrenNodes = nodes.filter(item => {
+      return item.referee === node.id
+    })
+    Object.assign(curnodes[index], { children: childrenNodes })
+    childrenNodes.length > 0 ? traverseNodes(childrenNodes, nodes) : null
+    return node
+  })
+  return tree
+}
+
 export {
   isArray,
   hasKey,
@@ -859,5 +872,6 @@ export {
   getIndustry,
   getCommaMoney,
   isRoleBtnsVisible,
-  getQuarter
+  getQuarter,
+  traverseNodes
 }
