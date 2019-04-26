@@ -100,6 +100,10 @@ export function CContract(contract) {
     contract && contract.hasOwnProperty('attachments')
       ? contract.attachments
       : []
+  this.paymenttime =
+    contract && contract.hasOwnProperty('paymenttime')
+      ? contract.paymenttime
+      : null
 }
 
 CContract.prototype.getId = function() {
@@ -340,4 +344,12 @@ CContract.prototype.getAttachments = function() {
 
 CContract.prototype.setAttachments = function(attachments) {
   this.attachments = attachments
+}
+
+CContract.prototype.getPaymenttime = function() {
+  return this.paymenttime
+}
+
+CContract.prototype.setPaymenttime = function(paymenttime) {
+  this.paymenttime = paymenttime
 }

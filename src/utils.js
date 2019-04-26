@@ -821,8 +821,8 @@ function getQuarter(year, quarterno) {
   return Object.assign(
     {},
     {
-      startdate: parseInt(startdate.getTime() / 1000),
-      enddate: parseInt(enddate.getTime() / 1000)
+      startdate: parseInt(startdate.getTime()),
+      enddate: parseInt(enddate.getTime())
     }
   )
 }
@@ -838,6 +838,14 @@ function traverseNodes(curnodes, nodes) {
     return node
   })
   return tree
+}
+
+// 倒序树节点
+function trackTreeNodes(nodes, items) {
+  if (nodes.children && nodes.children.length > 0) {
+    let children = nodes.children
+    
+  }
 }
 
 export {

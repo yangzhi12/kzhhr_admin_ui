@@ -69,6 +69,13 @@
         <td class="text-xs-center">
           <template>
             <div>
+              {{ props.item.paymenttime ? getFormtedTime(props.item.paymenttime) : '-' }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
               {{ getApproveFlowName(props.item.contractstate)['name'] || '--' }}
             </div>
           </template>
@@ -171,6 +178,7 @@ export default {
         { text: '开始时间', value: 'contractstart', align: 'center', sortable: false },
         { text: '结束时间', value: 'contractend', align: 'center', sortable: false },
         { text: '签单人', value: 'username', align: 'center', sortable: false },
+        { text: '收款时间', value: 'paymenttime', align: 'center', sortable: false },
         { text: '合同状态', value: 'contractstate', align: 'center', sortable: false },
         {
           text: '操作',

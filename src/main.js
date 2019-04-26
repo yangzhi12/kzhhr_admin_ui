@@ -65,7 +65,9 @@ new Vue({
       })
       Promise.all(promises).then(response => {
         this.dicts.map((dict, index) => {
-          this[dict] = response[index].data.data.data
+          if (response[index].data && response[index].data.data) {
+            this[dict] = response[index].data.data.data
+          }
         })
         this.$store.dispatch('dictsList', {
           industry: this['industry'],

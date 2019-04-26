@@ -1,4 +1,4 @@
-const baseUrl = 'http://localhost:8360'
+const baseUrl = 'http://127.0.0.1:8360'
 // const baseUrl = ''
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
@@ -39,7 +39,9 @@ const config = {
       state: { url: '/state', method: 'post' },
       fee: { url: '/fee', method: 'post' },
       level: { url: '/levelcontract', method: 'post' },
-      team: { url: '/teamindex', method: 'post' }
+      team: { url: '/teamindex', method: 'post' },
+      levels: { url: '/levelcontracts', method: 'post' },
+      levelreview: { url: '/levelreview', method: 'post' }
     },
     share: {
       list: { url: '/index', method: 'post' },
@@ -48,6 +50,9 @@ const config = {
     train: {
       list: { url: '/index', method: 'post' },
       level: { url: '/leveltrain', method: 'post' }
+    },
+    level: {
+      levelreview: { url: '/levelreview', method: 'post' }
     },
     dict: {
       index: { url: '/index', method: 'post' }

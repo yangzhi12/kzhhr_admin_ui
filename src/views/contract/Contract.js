@@ -210,6 +210,12 @@ export default {
         let attachments = this.contract.getAttachments('attachments')
         this.attachments000 = this.getContractAttachments(attachments, 0)
         this.attachments010 = this.getContractAttachments(attachments, 10)
+        // 收款时间
+        this.contract.setPaymenttime(
+          resContract.hasOwnProperty('paymenttime')
+            ? resContract.paymenttime
+            : null
+        )
       }
     },
     getApproveFlowName(flowno) {

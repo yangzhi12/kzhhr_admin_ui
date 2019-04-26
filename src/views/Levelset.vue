@@ -116,6 +116,7 @@
               </v-layout>
             </div>
             <div class="standard"
+                 :class="{ standardactive: title.id === 'standarone' }"
                  @click="showDetail('standarone')">
               <v-layout row
                         pt-1
@@ -123,10 +124,11 @@
                 <v-flex xs6
                         text-xs-right>自签站点数（个）：</v-flex>
                 <v-flex xs6
-                        text-xs-left>{{contracts.length}}</v-flex>
+                        text-xs-left>{{orders}}</v-flex>
               </v-layout>
             </div>
             <div class="standard"
+                 :class="{ standardactive: title.id === 'standartwo' }"
                  @click="showDetail('standartwo')">
               <v-layout row
                         pt-1
@@ -134,14 +136,15 @@
                 <v-flex xs4
                         text-xs-right>拓展数（个）：</v-flex>
                 <v-flex xs2
-                        text-xs-left>0</v-flex>
+                        text-xs-left>{{ expandnumber }}</v-flex>
                 <v-flex xs4
                         text-xs-right>团队站点数（个）：</v-flex>
                 <v-flex xs2
-                        text-xs-left>0</v-flex>
+                        text-xs-left>{{ teamorders }}</v-flex>
               </v-layout>
             </div>
             <div class="standard"
+                 :class="{ standardactive: title.id === 'standarthree' }"
                  @click="showDetail('standarthree')">
               <v-layout row
                         pt-1
@@ -157,38 +160,41 @@
               </v-layout>
             </div>
             <div class="standard"
+                 :class="{ standardactive: title.id === 'standarfour' }"
                  @click="showDetail('standarfour')">
               <v-layout row
                         pt-1
                         pb-1>
                 <v-flex xs4
-                        text-xs-right>老客户总数（个）：</v-flex>
+                        text-xs-right>客户总数（个）：</v-flex>
                 <v-flex xs2
-                        text-xs-left>120</v-flex>
+                        text-xs-left>0</v-flex>
                 <v-flex xs5
-                        text-xs-right>目前老客户流失数（个）：</v-flex>
+                        text-xs-right>目前客户流失数（个）：</v-flex>
                 <v-flex xs1
-                        text-xs-left>10</v-flex>
+                        text-xs-left>0</v-flex>
               </v-layout>
             </div>
             <v-layout row>
-              <v-flex xs8>
+              <!-- <v-flex xs8>
                 <v-checkbox mt-0
                             pt-0
-                            label="是否冲抵老客户流失数"></v-checkbox>
-              </v-flex>
-              <v-flex xs4
-                      text-xs-left>
+                            label="是否冲抵客户流失数"></v-checkbox>
+              </v-flex> -->
+              <v-flex xs12
+                      text-xs-center>
                 <div style="font-size: 16px; padding-top: 18px;">
                   <span>当前拟定钻级：</span>
-                  <span style="color: red;">一钻A</span>
+                  <span style="color: red;">{{curlevel.name || '--'}}</span>
                 </div>
               </v-flex>
             </v-layout>
-            <v-layout row>
+            <v-layout row
+                      mt-2>
               <v-flex xs12
                       text-xs-center>
-                <v-btn color="primary">确定</v-btn>
+                <v-btn color="primary"
+                       @click="reviewOk">确定</v-btn>
               </v-flex>
             </v-layout>
           </v-flex>
@@ -231,29 +237,25 @@
               </div>
               <div v-if="title.id === 'standartwo'"
                    class="standarcontainer">
-                <div class="member">
-                  <div class="levelcontainer">
-                    <div class="level rootmember">
-                      <div class="leveltext">{{relation.username}}</div>
-                      <div class="leveltext levelsubtext">({{relation.levelname}})</div>
-                    </div>
-                  </div>
-                  <div class="levelcontainer"
-                       v-for="item in relation.children"
-                       :key="item.id">
-                    <div class="navline0"></div>
-                    <div class="level">
-                      <div class="levelh"></div>
-                      <div class="leveltext">{{item.username}}</div>
-                      <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                <div v-if="relation && relation.children.length > 0">
+                  <v-layout row>
+                    <v-flex xs12>成员关系图<span class="labelsubtext">（注：季度拓展成员标识为红色）</span></v-flex>
+                  </v-layout>
+                  <div class="member">
+                    <div class="levelcontainer">
+                      <div class="level rootmember">
+                        <div class="leveltext">{{relation.username}}</div>
+                        <div class="leveltext levelsubtext">({{relation.levelname}})</div>
+                      </div>
                     </div>
                     <div class="levelcontainer"
-                         v-for="item in item.children"
+                         v-for="item in relation.children"
                          :key="item.id">
-                      <div class="navline1"></div>
+                      <div class="navline0"></div>
                       <div class="level">
                         <div class="levelh"></div>
-                        <div class="leveltext">{{item.username}}</div>
+                        <div class="leveltext"
+                             :class="{membercolor: (item.year == curyear && item.q === curquarter)}">{{item.username}}</div>
                         <div class="leveltext levelsubtext">({{item.levelname}})</div>
                       </div>
                       <div class="levelcontainer"
@@ -262,7 +264,8 @@
                         <div class="navline1"></div>
                         <div class="level">
                           <div class="levelh"></div>
-                          <div class="leveltext">{{item.username}}</div>
+                          <div class="leveltext"
+                               :class="{membercolor: (item.year == curyear && item.q === curquarter)}">{{item.username}}</div>
                           <div class="leveltext levelsubtext">({{item.levelname}})</div>
                         </div>
                         <div class="levelcontainer"
@@ -271,15 +274,58 @@
                           <div class="navline1"></div>
                           <div class="level">
                             <div class="levelh"></div>
-                            <div class="leveltext">{{item.username}}</div>
+                            <div class="leveltext"
+                                 :class="{membercolor: (item.year == curyear && item.q === curquarter)}">{{item.username}}</div>
                             <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                          </div>
+                          <div class="levelcontainer"
+                               v-for="item in item.children"
+                               :key="item.id">
+                            <div class="navline1"></div>
+                            <div class="level">
+                              <div class="levelh"></div>
+                              <div class="leveltext"
+                                   :class="{membercolor: (item.year == curyear && item.q === curquarter)}">{{item.username}}</div>
+                              <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div v-if="levelcontracts.length > 0">
+                    <div>团队站点</div>
+                    <template v-for="contract in levelcontracts">
+                      <div class="standarcontent"
+                           :key="contract.id">
+                        <v-layout row>
+                          <v-flex xs12>
+                            <span>合同编号：</span>
+                            <span>{{contract.contractno}}</span>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                          <v-flex xs12>
+                            <span>客户名称：</span>
+                            <span>{{contract.contractname}}</span>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                          <v-flex xs12>
+                            <span>合同金额：</span>
+                            <span>{{contract.contractvalue}}&nbsp;&nbsp;元</span>
+                          </v-flex>
+                        </v-layout>
+                        <v-layout row>
+                          <v-flex xs12>
+                            <span>起止时间：</span>
+                            <span>{{getFormtedTime(contract.contractstart)}}&nbsp;&nbsp;至&nbsp;&nbsp;{{getFormtedTime(contract.contractend)}}</span>
+                          </v-flex>
+                        </v-layout>
+                      </div>
+                    </template>
+                  </div>
                 </div>
-                <div>团队签单</div>
               </div>
               <div v-if="title.id === 'standarthree'"
                    class="standarcontainer">
@@ -348,6 +394,9 @@
                   </div>
                 </template>
               </div>
+              <div v-if="title.id === 'standarfour'"
+                   class="standarcontainer">
+              </div>
             </div>
           </v-flex>
         </v-layout>
@@ -383,7 +432,7 @@ export default {
         },
         standarfour: {
           id: 'standarfour',
-          name: '流失的老客户'
+          name: '流失的客户'
         }
       },
       title: '',
@@ -400,12 +449,20 @@ export default {
         ok: true
       },
       keywords: '',
-      curmember: 0,
+      curmember: {},
       contracts: [],
+      levelcontracts: [],
       shares: [],
       trains: [],
       teams: [],
-      relation: null
+      relation: null,
+      curyear: null,
+      curquarter: null,
+      expandnumber: 0,
+      information: 0,
+      curlevel: {},
+      orders: 0,
+      teamorders: 0
     }
   },
   watch: {},
@@ -423,12 +480,12 @@ export default {
           if (response.status === 200) {
             let res = response.data
             if (res.errno) {
-              window.console.log(res.errmsg)
               this.loading = false
             } else {
               let result = res.data
               this.members = result.data
               this.curmember = this.members[0]
+              this.showLevel(this.curmember)
               this.loading = false
             }
           } else {
@@ -526,20 +583,27 @@ export default {
     },
     showLevel (member) {
       this.curmember = member
+      this.expandnumber = 0
       // 根据用户id查询合同信息
       let userid = this.curmember.id
       // 合同起止时间
-      let quarter = getQuarter(2019, 2)
+      let quarter = getQuarter(this.curyear, this.curquarter)
       let params = Object.assign({}, { userid: userid, startdate: quarter.startdate, enddate: quarter.enddate })
       let requests = [
         excuteApis(params, global.config.adminApis, 'contract', 'level'),
         excuteApis(params, global.config.adminApis, 'share', 'level'),
         excuteApis(params, global.config.adminApis, 'train', 'level'),
         excuteApis(params, global.config.adminApis, 'contract', 'team'),
+        excuteApis(params, global.config.adminApis, 'contract', 'levels')
       ]
       Promise.all(requests).then(res => {
         if (res[0].data && res[0].data.data) {
           this.contracts = res[0].data.data
+          let ordersvalue = 0
+          this.contracts.map(item => {
+            ordersvalue += item.contractvalue
+          })
+          this.orders = Number(ordersvalue / 30000, 2)
         }
         if (res[1].data && res[1].data.data) {
           this.shares = res[1].data.data
@@ -549,8 +613,18 @@ export default {
         }
         if (res[3].data && res[3].data.data) {
           this.teams = res[3].data.data
+          this.expandnumber = this.getTeamQNumbers(this.teams)
           this.reduceTeam(userid, this.teams)
         }
+        if (res[4].data && res[4].data.data) {
+          this.levelcontracts = res[4].data.data
+          let teamordersvalue = 0
+          this.levelcontracts.map(item => {
+            teamordersvalue += item.contractvalue
+          })
+          this.teamorders = Number(teamordersvalue / 30000, 2)
+        }
+        this.reviewLevel()
       })
     },
     showDetail (title) {
@@ -564,9 +638,64 @@ export default {
       })
       let tree = traverseNodes(root, teams)
       this.relation = tree[0]
+    },
+    getTeamQNumbers (teams) {
+      let num = 0
+      if (teams && teams.length > 0) {
+        let rl = teams[0].refmap.split('.').length
+        let ft = teams.filter(item => {
+          let il = item.refmap.split('.').length
+          return `${item.year}` === `${this.curyear}` && `${item.q}` === `${this.curquarter}` && rl !== il
+        })
+        num = ft.length
+      }
+      return num
+    },
+    reviewLevel () {
+      this.information = this.getInformationnum()
+      let params = Object.assign({}, {
+        information: this.information,
+        orders: Math.round(this.orders),
+        expands: this.expandnumber,
+        teamorders: Math.round(this.teamorders),
+        trains: this.trains.length,
+        shares: this.shares.length,
+        lostorders: 0
+      })
+      excuteApis(params, global.config.adminApis, 'level', 'levelreview').then(res => {
+        if (res.data && res.data.data) {
+          let level = res.data.data
+          this.curlevel = level
+        }
+      })
+    },
+    getInformationnum () {
+      let num = 0
+      const userinfo = this.curmember
+      // 一钻
+      if (userinfo.mobile && userinfo.certificate && userinfo.weixin_no) {
+        num += 3
+      }
+      // 二钻
+      if (userinfo.resume && userinfo.bankno && userinfo.email) {
+        num += 3
+      }
+      return num
+    },
+    reviewOk () {
+      // let childrenids = 
+      console.log(this.teams)
     }
   },
   created () {
+    this.curyear = (new Date()).getFullYear()
+    let m = (new Date()).getMonth() / 3
+    if (!m) {
+      this.curyear -= 1
+      this.curquarter = 4
+    } else {
+      this.curquarter = m
+    }
     this.getMemberList()
   },
   components: {}
@@ -614,8 +743,6 @@ export default {
   width: 80px;
   height: 80px;
 }
-.member {
-}
 .levelcontainer {
   position: relative;
   margin-left: 10px;
@@ -625,7 +752,7 @@ export default {
   height: 100%;
   width: 1px;
   left: 20px;
-  top: -15px;
+  top: -10px;
   z-index: 2;
   border-left: 1px dashed #1982c2;
 }
@@ -642,7 +769,7 @@ export default {
   position: relative;
   display: flex;
   direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   padding-top: 5px;
   padding-bottom: 5px;
 }
@@ -654,7 +781,15 @@ export default {
   margin-top: 10px;
 }
 .levelcontainer .level .levelsubtext {
-  /* font-size: 26px; */
+  color: rgba(51, 51, 51, 0.5);
+}
+.standardactive {
+  background-color: rgba(244, 244, 244, 0.5);
+}
+.membercolor {
+  color: red;
+}
+.labelsubtext {
   color: rgba(51, 51, 51, 0.5);
 }
 </style>
