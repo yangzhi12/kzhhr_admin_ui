@@ -41,7 +41,8 @@ const config = {
       level: { url: '/levelcontract', method: 'post' },
       team: { url: '/teamindex', method: 'post' },
       levels: { url: '/levelcontracts', method: 'post' },
-      levelreview: { url: '/levelreview', method: 'post' }
+      levelreview: { url: '/levelreview', method: 'post' },
+      allmember: { url: '/allmember', method: 'post'}
     },
     share: {
       list: { url: '/index', method: 'post' },

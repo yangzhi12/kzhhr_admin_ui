@@ -840,11 +840,30 @@ function traverseNodes(curnodes, nodes) {
   return tree
 }
 
+// 遍历树(自定义根节点)
+function traverseNoRootNodes(nodes, reuses) {
+  nodes.map((item, index) => {
+    let cinodes = nodes.filter(inode => {
+      return inode.referee === item.id
+    })
+    Object.assign(nodes[index], { children: [] })
+    if (cinodes.length > 0) {
+      traverseNoRootNodes(cinodes, reuses)
+      cinodes.map(cn => {
+        // 记录存在引用的node,后期剔除
+        reuses.push(cn)
+      })
+      Object.assign(nodes[index], {
+        children: nodes[index].children.concat(cinodes)
+      })
+    }
+  })
+}
+
 // 倒序树节点
 function trackTreeNodes(nodes, items) {
   if (nodes.children && nodes.children.length > 0) {
     let children = nodes.children
-    
   }
 }
 
@@ -881,5 +900,6 @@ export {
   getCommaMoney,
   isRoleBtnsVisible,
   getQuarter,
-  traverseNodes
+  traverseNodes,
+  traverseNoRootNodes
 }

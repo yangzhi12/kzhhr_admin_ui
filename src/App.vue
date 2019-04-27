@@ -105,3 +105,10 @@ export default {
   }
 }
 </script>
+
+<style>
+html,
+body {
+  overflow-y: hidden;
+}
+</style>
