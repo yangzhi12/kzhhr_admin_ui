@@ -2,7 +2,7 @@
   <v-card class="page-content"
           flat>
     <v-layout row>
-      <v-flex xs3
+      <v-flex xs2
               pa-2
               class="pageLeft">
         <!-- <v-layout row>
@@ -85,7 +85,7 @@
                 <div class="levelh"></div>
                 <div class="leveltext"
                      :class="{membercolor: item.id === curmember.id}">{{item.username}}</div>
-                <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                <!-- <div class="leveltext levelsubtext">({{item.levelname}})</div> -->
               </div>
               <div class="levelcontainer"
                    v-for="item in item.children"
@@ -97,7 +97,7 @@
                   <div class="levelh"></div>
                   <div class="leveltext"
                        :class="{membercolor: item.id === curmember.id}">{{item.username}}</div>
-                  <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                  <!-- <div class="leveltext levelsubtext">({{item.levelname}})</div> -->
                 </div>
                 <div class="levelcontainer"
                      v-for="item in item.children"
@@ -109,7 +109,7 @@
                     <div class="levelh"></div>
                     <div class="leveltext"
                          :class="{membercolor: item.id === curmember.id}">{{item.username}}</div>
-                    <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                    <!-- <div class="leveltext levelsubtext">({{item.levelname}})</div> -->
                   </div>
                   <div class="levelcontainer"
                        v-for="item in item.children"
@@ -121,7 +121,7 @@
                       <div class="levelh"></div>
                       <div class="leveltext"
                            :class="{membercolor: item.id === curmember.id}">{{item.username}}</div>
-                      <div class="leveltext levelsubtext">({{item.levelname}})</div>
+                      <!-- <div class="leveltext levelsubtext">({{item.levelname}})</div> -->
                     </div>
                   </div>
                 </div>
@@ -130,14 +130,16 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex xs9
+      <v-flex xs10
               pa-2>
         <v-layout row
                   justify-center>
           <v-flex xs6>
             <v-layout row>
               <v-flex xs12
-                      text-xs-left>评级评定</v-flex>
+                      text-xs-left>钻级评定
+                <span>（年份：{{curyear}}，季度：{{curquarter}}）</span>
+              </v-flex>
             </v-layout>
             <div class="standard">
               <v-layout row
@@ -199,10 +201,8 @@
               <v-layout row
                         pt-1
                         pb-1>
-                <v-flex xs6
-                        text-xs-right>自签站点数(个)：</v-flex>
-                <v-flex xs6
-                        text-xs-left>{{orders}}</v-flex>
+                <v-flex xs12
+                        text-xs-center>自签站点数(个)：{{orders}}</v-flex>
               </v-layout>
             </div>
             <div class="standard"
@@ -213,7 +213,8 @@
                         pb-1
                         justify-center>
                 <v-flex xs12
-                        text-xs-center>团队站点总数(个)：{{ teamorders }}<span style="color:#1976d2 !important;">（下一级站点数(个)：{{ dirOrders }}&nbsp;&nbsp;下二级站点数(个)：{{ indirOrders }}）</span></v-flex>
+                        text-xs-center>团队站点总数(个)：{{ teamorders }}<span v-if="teamorders > 0"
+                        style="color:#1976d2 !important;">（下一级站点数：{{ dirOrders }}，&nbsp;&nbsp;下二级站点数：{{ indirOrders }}）</span></v-flex>
               </v-layout>
             </div>
             <div class="standard"
@@ -224,7 +225,12 @@
                         pb-1
                         justify-center>
                 <v-flex xs12
-                        text-xs-center>拓展总人数(人)：{{ expandnumber }}<span style="color:#1976d2 !important;">（业务员10人，级别最高且人数最多）</span></v-flex>
+                        text-xs-center>拓展总人数(人)：{{ expandnumber }}
+                  <template v-for="(item,index) in Object.keys(memberLevel)">
+                    <span :key="item"
+                          style="color:#1976d2 !important;"><span v-if="index==0">（</span>{{getLevelName(item)}}：{{memberLevel[item]}}<span v-if="index !== Object.keys(memberLevel).length - 1">，</span><span v-if="index === Object.keys(memberLevel).length - 1">）</span></span>
+                  </template>
+                </v-flex>
               </v-layout>
             </div>
             <div class="standard"
@@ -328,6 +334,13 @@
                         <span>{{getFormtedTime(contract.paymenttime)}}</span>
                       </v-flex>
                     </v-layout>
+                    <v-layout row>
+                      <v-flex xs12
+                              text-xs-riht>
+                        <span>签单人：</span>
+                        <span>{{contract.username}}</span>
+                      </v-flex>
+                    </v-layout>
                   </div>
                 </template>
               </div>
@@ -365,6 +378,12 @@
                         <v-flex xs12>
                           <span>收款时间：</span>
                           <span>{{getFormtedTime(contract.paymenttime)}}</span>
+                        </v-flex>
+                      </v-layout>
+                      <v-layout row>
+                        <v-flex xs12>
+                          <span>签单人：</span>
+                          <span>{{contract.username}}</span>
                         </v-flex>
                       </v-layout>
                     </div>
@@ -500,7 +519,6 @@
             <div v-if="title.id === 'standarfive'"
                  class="standarcontainer">
             </div>
-            </div>
           </v-flex>
         </v-layout>
         <!-- <v-layout row>
@@ -513,7 +531,11 @@
 
 <script>
 import { excuteApis } from '@/api'
-import { parseTime, getIdInvisible, getMobileInvisible, isRoleBtnsVisible, getQuarter, traverseNodes, traverseNoRootNodes } from '@/utils'
+import {
+  parseTime, getIdInvisible, getMobileInvisible,
+  isRoleBtnsVisible, getQuarter, traverseNodes,
+  traverseNoRootNodes, summaryMemberLevel
+} from '@/utils'
 import { Promise } from 'q';
 
 export default {
@@ -576,7 +598,8 @@ export default {
       search: null,
       caseSensitive: false,
       dirOrders: 0,
-      indirOrders: 0
+      indirOrders: 0,
+      memberLevel: {}
     }
   },
   computed: {
@@ -679,6 +702,7 @@ export default {
       if (!member) return
       this.curmember = member
       this.expandnumber = 0
+      this.memberLevel = summaryMemberLevel(this.curmember, this.curyear, this.curquarter)
       // 根据用户id查询合同信息
       let userid = this.curmember.id
       // 合同起止时间
@@ -736,19 +760,19 @@ export default {
             return con.userid === member.id
           })
           order.length > 0 ? dirOrderValue += order[0].contractvalue : null
+          // 间接下级签单
+          let subChildren = member.children
+          if (subChildren.length > 0) {
+            subChildren.map(submember => {
+              let suborder = levelcontracts.filter(con => {
+                return con.userid === submember.id
+              })
+              suborder.length > 0 ? indirOrderValue += suborder[0].contractvalue : null
+            })
+          }
+          this.indirOrders = Number(indirOrderValue / 30000, 2)
         })
         this.dirOrders = Number(dirOrderValue / 30000, 2)
-        // 间接下级签单
-        let subChildren = children.children
-        if (subChildren.length > 0) {
-          subChildren.map(member => {
-            let suborder = levelcontracts.filter(con => {
-              return con.userid === member.id
-            })
-            suborder.length > 0 ? indirOrderValue += suborder[0].contractvalue : null
-          })
-        }
-        this.indirOrders = Number(indirOrderValue / 30000, 2)
       }
     },
     showDetail (title) {
@@ -867,9 +891,10 @@ export default {
   overflow-y: scroll;
 }
 .standarcontent {
-  background-color: rgba(244, 244, 244, 0.5);
+  /* background-color: rgba(244, 244, 244, 0.5); */
   padding: 5px 5px;
   margin-bottom: 5px;
+  border-bottom: 2px solid rgb(244, 244, 244);
 }
 .levelimagecontainer {
   padding: 2px 2px;

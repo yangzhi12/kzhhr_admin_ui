@@ -860,6 +860,25 @@ function traverseNoRootNodes(nodes, reuses) {
   })
 }
 
+function summaryMemberLevel(member, year, quarterindex) {
+  let members = member.children
+  let le = {}
+  if (members && members.length > 0) {
+    let levels = members.reduce((curlevel, item) => {
+      if (`${item.year}` === `${year}` && `${item.q}` === `${quarterindex}`) {
+        if (!curlevel[item.level]) {
+          curlevel[item.level] = 1
+        } else {
+          curlevel[item.level] += 1
+        }
+      }
+      return curlevel
+    }, {})
+    le = levels
+  }
+  return le
+}
+
 // 倒序树节点
 function trackTreeNodes(nodes, items) {
   if (nodes.children && nodes.children.length > 0) {
@@ -901,5 +920,6 @@ export {
   isRoleBtnsVisible,
   getQuarter,
   traverseNodes,
-  traverseNoRootNodes
+  traverseNoRootNodes,
+  summaryMemberLevel
 }
