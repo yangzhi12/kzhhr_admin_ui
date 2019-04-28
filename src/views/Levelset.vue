@@ -499,6 +499,21 @@
         </v-layout> -->
       </v-flex>
     </v-layout>
+    <v-snackbar v-model="snackbar"
+                :bottom="y === 'bottom'"
+                :left="x === 'left'"
+                :right="x === 'right'"
+                :timeout="3000"
+                :top="y === 'top'"
+                color="primary"
+                :vertical="mode === 'vertical'">
+      {{ snackbarContent }}
+      <v-btn dark
+             flat
+             @click="snackbar = false">
+        关闭
+      </v-btn>
+    </v-snackbar>
   </v-card>
 </template>
 
@@ -545,11 +560,6 @@ export default {
         { text: '姓名', align: 'center', sortable: false, value: 'username' },
         { text: '联系电话', value: 'mobile', align: 'center', sortable: false }
       ],
-      prompt: {
-        dialog: false,
-        title: '合伙人注册信息',
-        ok: true
-      },
       keywords: '',
       curmember: {},
       contracts: [],
@@ -577,6 +587,12 @@ export default {
       originMount: 0, // 老客户总数
       offsetMount: 0, // 冲抵老客户数
       lostMount: 0, // 流失的老客户
+      snackbar: false,
+      y: 'top',
+      x: null,
+      mode: '',
+      timeout: 6000,
+      snackbarContent: ''
     }
   },
   computed: {
@@ -768,12 +784,7 @@ export default {
         expands: this.memberLevel,
         teamorders: Math.round(this.teamorders),
         trains: this.trains.length,
-        shares: this.shares.length,
-        originMount: this.originMount,
-        offsetMount: this.offsetMount,
-        lostMount: this.lostMount,
-        issaleman: this.curmember.issaleman,
-        ismarketman: this.curmember.ismarketman
+        shares: this.shares.length
       })
       excuteApis(params, global.config.adminApis, 'level', 'levelreview').then(res => {
         if (res.data && res.data.data) {
@@ -808,6 +819,27 @@ export default {
       return tree
     },
     reviewOk () {
+      // originMount: this.originMount,
+      // offsetMount: this.offsetMount,
+      // lostMount: this.lostMount,
+      // issaleman: this.curmember.issaleman,
+      // ismarketman: this.curmember.ismarketman
+      // 判断下级是否已结算，若没结算则提示
+      let refuserids = []
+      this.curmember.children.map(item => {
+        refuserids.push(item.id)
+      })
+      excuteApis({ userid: this.curmember.id, refuserids: refuserids, year: this.curyear, quarter: this.curquarter }, global.config.adminApis, 'report', 'getsubecords').then(res => {
+        let data = res.data
+        if (data && data.errno) {
+          this.snackbarContent = data.errmsg
+          this.snackbar = true
+        } else {
+          this.snackbarContent = data.data
+          this.snackbar = true
+        }
+      })
+      // 若下级结算完毕则进行本人结算    
     }
   },
   created () {

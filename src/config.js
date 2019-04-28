@@ -42,7 +42,7 @@ const config = {
       team: { url: '/teamindex', method: 'post' },
       levels: { url: '/levelcontracts', method: 'post' },
       levelreview: { url: '/levelreview', method: 'post' },
-      allmember: { url: '/allmember', method: 'post'}
+      allmember: { url: '/allmember', method: 'post' }
     },
     share: {
       list: { url: '/index', method: 'post' },
@@ -54,6 +54,9 @@ const config = {
     },
     level: {
       levelreview: { url: '/levelreview', method: 'post' }
+    },
+    report: {
+      getsubecords: { url: '/getsubecords', method: 'post' }
     },
     dict: {
       index: { url: '/index', method: 'post' }
