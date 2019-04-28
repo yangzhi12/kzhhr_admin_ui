@@ -143,8 +143,8 @@
             </v-layout>
             <div class="standard">
               <v-layout row
-                        pt-1
-                        pb-1>
+                        pt-2
+                        pb-2>
                 <v-flex xs3
                         text-xs-right>姓名：</v-flex>
                 <v-flex xs3
@@ -155,8 +155,8 @@
                         text-xs-left>{{curmember.mobile || '--'}}</v-flex>
               </v-layout>
               <v-layout row
-                        pt-1
-                        pb-1>
+                        pt-2
+                        pb-2>
                 <v-flex xs3
                         text-xs-right>身份证号：</v-flex>
                 <v-flex xs3
@@ -166,41 +166,13 @@
                 <v-flex xs3
                         text-xs-left>{{curmember.weixin_no || '--'}}</v-flex>
               </v-layout>
-              <v-layout row
-                        pt-1
-                        pb-1>
-                <v-flex xs3
-                        text-xs-right>邮箱：</v-flex>
-                <v-flex xs3
-                        text-xs-left>{{curmember.email || '--'}}</v-flex>
-                <v-flex xs3
-                        text-xs-right>银行卡号：</v-flex>
-                <v-flex xs3
-                        text-xs-left>{{ curmember.bankno || '--' }}</v-flex>
-              </v-layout>
-              <v-layout row
-                        pt-1
-                        pb-1>
-                <v-flex xs3
-                        text-xs-right>开户行地址：</v-flex>
-                <v-flex xs9
-                        text-xs-left>{{curmember.bankaddress || '--'}}</v-flex>
-              </v-layout>
-              <!-- <v-layout row
-                        pt-1
-                        pb-1>
-                <v-flex xs3
-                        text-xs-right>个人简历：</v-flex>
-                <v-flex xs9
-                        text-xs-left>{{curmember.resume || '--'}}</v-flex>
-              </v-layout> -->
             </div>
             <div class="standard"
                  :class="{ standardactive: title.id === 'standarone' }"
                  @click="showDetail('standarone')">
               <v-layout row
-                        pt-1
-                        pb-1>
+                        pt-2
+                        pb-2>
                 <v-flex xs12
                         text-xs-center>自签站点数(个)：{{orders}}</v-flex>
               </v-layout>
@@ -209,8 +181,8 @@
                  :class="{ standardactive: title.id === 'standartwo' }"
                  @click="showDetail('standartwo')">
               <v-layout row
-                        pt-1
-                        pb-1
+                        pt-2
+                        pb-2
                         justify-center>
                 <v-flex xs12
                         text-xs-center>团队站点总数(个)：{{ teamorders }}<span v-if="teamorders > 0"
@@ -221,8 +193,8 @@
                  :class="{ standardactive: title.id === 'standarthree' }"
                  @click="showDetail('standarthree')">
               <v-layout row
-                        pt-1
-                        pb-1
+                        pt-2
+                        pb-2
                         justify-center>
                 <v-flex xs12
                         text-xs-center>拓展总人数(人)：{{ expandnumber }}
@@ -237,8 +209,8 @@
                  :class="{ standardactive: title.id === 'standarfour' }"
                  @click="showDetail('standarfour')">
               <v-layout row
-                        pt-1
-                        pb-1>
+                        pt-2
+                        pb-2>
                 <v-flex xs4
                         text-xs-right>培训次数(次)：</v-flex>
                 <v-flex xs2
@@ -253,25 +225,26 @@
                  :class="{ standardactive: title.id === 'standarfive' }"
                  @click="showDetail('standarfive')">
               <v-layout row
-                        pt-1
-                        pb-1>
+                        pt-2
+                        pb-2>
                 <v-flex xs4
                         text-xs-right>老客户总数(个)：</v-flex>
                 <v-flex xs2
-                        text-xs-left>0</v-flex>
+                        text-xs-left>{{originMount}}</v-flex>
                 <v-flex xs5
                         text-xs-right>目前老客户流失数(个)：</v-flex>
                 <v-flex xs1
-                        text-xs-left>0</v-flex>
+                        text-xs-left>{{offsetMount}}</v-flex>
               </v-layout>
             </div>
             <v-layout row>
-              <!-- <v-flex xs8>
-                <v-checkbox mt-0
-                            pt-0
-                            label="是否冲抵客户流失数"></v-checkbox>
-              </v-flex> -->
-              <v-flex xs12
+              <v-flex xs6
+                      text-xs-center>
+                <v-checkbox v-model="isoffset"
+                            hide-details
+                            label="是否冲抵老客户流失数"></v-checkbox>
+              </v-flex>
+              <v-flex xs6
                       text-xs-center>
                 <div style="font-size: 16px; padding-top: 18px;">
                   <span>当前拟定钻级：</span>
@@ -599,7 +572,11 @@ export default {
       caseSensitive: false,
       dirOrders: 0,
       indirOrders: 0,
-      memberLevel: {}
+      memberLevel: {},
+      isoffset: true,
+      originMount: 0, // 老客户总数
+      offsetMount: 0, // 冲抵老客户数
+      lostMount: 0, // 流失的老客户
     }
   },
   computed: {
@@ -609,60 +586,44 @@ export default {
         : undefined
     }
   },
-  watch: {},
+  watch: {
+    isoffset: function (v) {
+      if (v) {
+        if (this.lostMount >= this.orders) {
+          this.lostMount -= this.orders
+          this.offsetMount = this.orders
+          this.orders = 0
+        } else {
+          this.orders -= this.lostMount
+          this.offsetMount = this.lostMount
+          this.lostMount = 0
+        }
+        this.reviewLevel()
+      } else {
+        this.showLevel(this.curmember)
+      }
+    }
+  },
   methods: {
     getMemberList () {
-      // let requestParams = Object.assign({}, {
-      //   page: 1,
-      //   size: 1000,
-      // })
-      // if (this.keywords) {
-      //   Object.assign(requestParams, { mobile: this.keywords.trim(), name: this.keywords.trim() })
-      // }
-      // try {
-      //   excuteApis(requestParams, global.config.adminApis, 'user', 'list').then(response => {
-      //     if (response.status === 200) {
-      //       let res = response.data
-      //       if (res.errno) {
-      //         this.loading = false
-      //       } else {
-      //         let result = res.data
-      //         this.members = result.data
-      //         this.curmember = this.members[0]
-      //         this.showLevel(this.curmember)
-      //         this.loading = false
-      //       }
-      //     } else {
-      //       this.loading = false
-      //       window.console.log(response.statusText)
-      //     }
-      //   })
-      // } catch (error) {
-      //   window.console.log(error)
-      //   this.loading = false
-      // }
-      try {
-        excuteApis({}, global.config.adminApis, 'contract', 'allmember').then(response => {
-          if (response.status === 200) {
-            let res = response.data
-            if (res.errno) {
-              this.loading = false
-            } else {
-              let result = res.data
-              let tree = this.reduceMember(result)
-              this.memberTree = { id: 0, username: '昆自合伙人', children: [].concat(tree) }
-              this.curmember = tree[0]
-              this.showLevel(this.curmember)
-              this.loading = false
-            }
-          } else {
+      excuteApis({}, global.config.adminApis, 'contract', 'allmember').then(response => {
+        if (response.status === 200) {
+          let res = response.data
+          if (res.errno) {
             this.loading = false
-            window.console.log(response.statusText)
+          } else {
+            let result = res.data
+            let tree = this.reduceMember(result)
+            this.memberTree = { id: 0, username: '昆自合伙人', children: [].concat(tree) }
+            this.curmember = tree[0]
+            this.showLevel(this.curmember)
+            this.loading = false
           }
-        })
-      } catch (error) {
-
-      }
+        } else {
+          this.loading = false
+          window.console.log(response.statusText)
+        }
+      })
     },
     getFormtedTime (time) {
       if (!time) {
@@ -804,11 +765,15 @@ export default {
       let params = Object.assign({}, {
         information: this.information,
         orders: Math.round(this.orders),
-        expands: this.expandnumber,
+        expands: this.memberLevel,
         teamorders: Math.round(this.teamorders),
         trains: this.trains.length,
         shares: this.shares.length,
-        lostorders: 0
+        originMount: this.originMount,
+        offsetMount: this.offsetMount,
+        lostMount: this.lostMount,
+        issaleman: this.curmember.issaleman,
+        ismarketman: this.curmember.ismarketman
       })
       excuteApis(params, global.config.adminApis, 'level', 'levelreview').then(res => {
         if (res.data && res.data.data) {
@@ -834,7 +799,7 @@ export default {
       let tree = []
       let reuses = []
       traverseNoRootNodes(allmembers, reuses)
-      allmembers.map((item, index) => {
+      allmembers.map((item) => {
         let us = reuses.filter(rs => {
           return rs.id === item.id
         })
@@ -843,8 +808,6 @@ export default {
       return tree
     },
     reviewOk () {
-      // let childrenids = 
-      console.log(this.teams)
     }
   },
   created () {

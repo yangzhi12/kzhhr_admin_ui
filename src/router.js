@@ -58,14 +58,6 @@ export default new Router({
       }
     },
     {
-      path: '/report',
-      name: 'report',
-      component: () => import('./views/Report.vue'),
-      meta: {
-        requireAuth: true
-      }
-    },
-    {
       path: '/login',
       name: 'login',
       component: Login

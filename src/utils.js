@@ -879,13 +879,6 @@ function summaryMemberLevel(member, year, quarterindex) {
   return le
 }
 
-// 倒序树节点
-function trackTreeNodes(nodes, items) {
-  if (nodes.children && nodes.children.length > 0) {
-    let children = nodes.children
-  }
-}
-
 export {
   isArray,
   hasKey,

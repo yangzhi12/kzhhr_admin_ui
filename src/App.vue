@@ -16,9 +16,7 @@
         <v-btn flat
                @click="path('levelset')">钻级评定</v-btn>
         <v-btn flat
-               @click="path('accounts')">收益结算</v-btn>
-        <v-btn flat
-               @click="path('report')">统计报表</v-btn>
+               @click="path('accounts')">收益报表</v-btn>
         <v-menu open-on-hover
                 top
                 offset-y
@@ -109,6 +107,6 @@ export default {
 <style>
 html,
 body {
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 </style>
