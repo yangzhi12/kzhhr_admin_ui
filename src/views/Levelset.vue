@@ -5,66 +5,6 @@
       <v-flex xs2
               pa-2
               class="pageLeft">
-        <!-- <v-layout row>
-          <v-flex xs12
-                  text-xs-left>合伙人列表</v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs12
-                  pt-3
-                  pl-3
-                  pr-3>
-            <v-text-field v-model="keywords"
-                          append-icon="search"
-                          label="输入用户名或手机号查找"
-                          @keyup.enter="getMemberList"></v-text-field>
-          </v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs12
-                  class="tablelist">
-            <v-data-table :headers="headers"
-                          :items="members"
-                          :loading="loading"
-                          no-data-text="暂无数据"
-                          hide-actions
-                          class="elevation-0">
-              <template v-slot:items="props">
-                <tr style="cursor: pointer"
-                    @click="showLevel(props.item)">
-                  <td class="text-xs-center">
-                    <template>
-                      <span>
-                        <v-icon v-if="curmember.id === props.item.id"
-                                color="primary"
-                                small
-                                dark>check_circle</v-icon>
-                      </span>
-                      <span>
-                        {{ props.item.username }}
-                      </span>
-                    </template>
-                  </td>
-                  <td class="text-xs-center">{{ getMobile(props.item.mobile) }}</td>
-                </tr>
-              </template>
-            </v-data-table>
-          </v-flex>
-        </v-layout> -->
-        <v-layout row>
-          <v-flex xs12
-                  text-xs-left>合伙人列表</v-flex>
-        </v-layout>
-        <v-layout row>
-          <v-flex xs12
-                  pt-3
-                  pl-3
-                  pr-3>
-            <v-text-field v-model="search"
-                          append-icon="search"
-                          label="输入用户名"></v-text-field>
-          </v-flex>
-        </v-layout>
         <v-layout row>
           <v-flex xs12
                   class="tablelist"
@@ -896,7 +836,7 @@ export default {
   margin-right: 10px;
 }
 .tablelist {
-  height: 480px;
+  height: 570px;
   overflow-y: hidden;
   overflow-y: scroll;
 }
