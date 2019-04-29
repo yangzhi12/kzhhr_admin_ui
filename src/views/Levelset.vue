@@ -158,13 +158,13 @@
                         pt-2
                         pb-2>
                 <v-flex xs3
-                        text-xs-right>身份证号：</v-flex>
+                        text-xs-right>当前钻级：</v-flex>
                 <v-flex xs3
-                        text-xs-left>{{curmember.certificate || '--'}}</v-flex>
+                        text-xs-left>{{getLevelName(curmember.levelno) || '--'}}</v-flex>
                 <v-flex xs3
-                        text-xs-right>微信号：</v-flex>
+                        text-xs-right>钻级时间：</v-flex>
                 <v-flex xs3
-                        text-xs-left>{{curmember.weixin_no || '--'}}</v-flex>
+                        text-xs-left>{{getFormtedTime(curmember.leveltime) || '--'}}</v-flex>
               </v-layout>
             </div>
             <div class="standard"
@@ -230,11 +230,11 @@
                 <v-flex xs4
                         text-xs-right>老客户总数(个)：</v-flex>
                 <v-flex xs2
-                        text-xs-left>{{originMount}}</v-flex>
+                        text-xs-left>{{originmount}}</v-flex>
                 <v-flex xs5
                         text-xs-right>目前老客户流失数(个)：</v-flex>
                 <v-flex xs1
-                        text-xs-left>{{offsetMount}}</v-flex>
+                        text-xs-left>{{offsetmount}}</v-flex>
               </v-layout>
             </div>
             <v-layout row>
@@ -247,7 +247,7 @@
               <v-flex xs6
                       text-xs-center>
                 <div style="font-size: 16px; padding-top: 18px;">
-                  <span>当前拟定钻级：</span>
+                  <span>本次拟定钻级：</span>
                   <span style="color: red;">{{curlevel.name || '--'}}</span>
                 </div>
               </v-flex>
@@ -583,10 +583,10 @@ export default {
       dirOrders: 0,
       indirOrders: 0,
       memberLevel: {},
-      isoffset: true,
-      originMount: 0, // 老客户总数
-      offsetMount: 0, // 冲抵老客户数
-      lostMount: 0, // 流失的老客户
+      isoffset: false,
+      originmount: 0, // 老客户总数
+      offsetmount: 0, // 冲抵老客户数
+      lostmount: 0, // 流失的老客户
       snackbar: false,
       y: 'top',
       x: null,
@@ -605,14 +605,14 @@ export default {
   watch: {
     isoffset: function (v) {
       if (v) {
-        if (this.lostMount >= this.orders) {
-          this.lostMount -= this.orders
-          this.offsetMount = this.orders
+        if (this.lostmount >= this.orders) {
+          this.lostmount -= this.orders
+          this.offsetmount = this.orders
           this.orders = 0
         } else {
-          this.orders -= this.lostMount
-          this.offsetMount = this.lostMount
-          this.lostMount = 0
+          this.orders -= this.lostmount
+          this.offsetmount = this.lostmount
+          this.lostmount = 0
         }
         this.reviewLevel()
       } else {
@@ -690,7 +690,8 @@ export default {
         excuteApis(params, global.config.adminApis, 'share', 'level'),
         excuteApis(params, global.config.adminApis, 'train', 'level'),
         excuteApis(params, global.config.adminApis, 'contract', 'team'),
-        excuteApis(params, global.config.adminApis, 'contract', 'levels')
+        excuteApis(params, global.config.adminApis, 'contract', 'levels'),
+        excuteApis(params, global.config.adminApis, 'report', 'curlevel')
       ]
       Promise.all(requests).then(res => {
         if (res[0].data && res[0].data.data) {
@@ -720,6 +721,12 @@ export default {
           })
           this.teamorders = Number(teamordersvalue / 30000, 2)
           this.getSubcontracts(this.levelcontracts)
+        }
+        let levelres = res[5].data
+        if (levelres && !levelres.errno) {
+          let level = levelres.data
+          this.$set(this.curmember, 'levelno', level.levelno)
+          this.$set(this.curmember, 'leveltime', level.leveltime)
         }
         this.reviewLevel()
       })
@@ -818,28 +825,50 @@ export default {
       })
       return tree
     },
-    reviewOk () {
-      // originMount: this.originMount,
-      // offsetMount: this.offsetMount,
-      // lostMount: this.lostMount,
-      // issaleman: this.curmember.issaleman,
-      // ismarketman: this.curmember.ismarketman
+    async reviewOk () {
       // 判断下级是否已结算，若没结算则提示
-      let refuserids = []
-      this.curmember.children.map(item => {
-        refuserids.push(item.id)
-      })
-      excuteApis({ userid: this.curmember.id, refuserids: refuserids, year: this.curyear, quarter: this.curquarter }, global.config.adminApis, 'report', 'getsubecords').then(res => {
-        let data = res.data
-        if (data && data.errno) {
-          this.snackbarContent = data.errmsg
-          this.snackbar = true
-        } else {
-          this.snackbarContent = data.data
-          this.snackbar = true
+      let refuser = this.curmember.children
+      let reftipsRes = await excuteApis({ userid: this.curmember.id, refuser: refuser, year: this.curyear, quarter: this.curquarter }, global.config.adminApis, 'report', 'getsubrecords')
+      if (reftipsRes.data && reftipsRes.data.errno) {
+        let result = reftipsRes.data.errmsg
+        let noleveluser = []
+        if (result) {
+          result.map(item => {
+            noleveluser.push(item.username)
+          })
+          this.snackbarContent = '请先评定以下人员钻级：' + noleveluser.join('，')
         }
-      })
-      // 若下级结算完毕则进行本人结算    
+        this.snackbar = true
+      } else {
+        // 若下级结算完毕则进行本人结算   
+        let report = Object.assign({}, {
+          userid: this.curmember.id,
+          year: this.curyear,
+          quarter: this.curquarter,
+          level: this.curlevel.no,
+          orders: this.orders,
+          trains: this.trains.length,
+          shares: this.shares.length,
+          orderprice: this.curlevel.price,
+          originmout: this.originmout,
+          offsetmout: this.offsetmout,
+          lostmout: this.lostmout,
+          issaleman: this.issaleman,
+          ismarketman: this.ismarketman,
+          information: this.information,
+          teamorders: this.teamorders,
+          explevelno: this.curlevel.expands,
+          explevelnum: this.curlevel.ex,
+          dirorders: this.dirorders,
+          indirorders: this.indirorders
+        });
+        let rep = await excuteApis(report, global.config.adminApis, 'report', 'store');
+        if (rep.data && !rep.data.errno) {
+          this.snackbarContent = '钻级鉴定成功.'
+          this.snackbar = true
+          this.showLevel(this.curmember);
+        }
+      }
     }
   },
   created () {

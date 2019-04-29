@@ -56,7 +56,9 @@ const config = {
       levelreview: { url: '/levelreview', method: 'post' }
     },
     report: {
-      getsubecords: { url: '/getsubecords', method: 'post' }
+      getsubrecords: { url: '/getsubrecords', method: 'post' },
+      curlevel: { url: '/curlevel', method: 'post' },
+      store: { url: '/store', method: 'post' }
     },
     dict: {
       index: { url: '/index', method: 'post' }
