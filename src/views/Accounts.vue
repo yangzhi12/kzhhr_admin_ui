@@ -10,14 +10,16 @@
                   pt-3
                   mr-4>
             <v-select :items="[2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030]"
-                      label="选择年份"></v-select>
+                      label="选择年份"
+                      v-model="year"></v-select>
           </v-flex>
           <v-flex xs3
                   pt-3>
             <v-select :items="[{id: 1, name: '第一季度'}, {id: 2, name: '第二季度'}, {id: 3, name: '第三季度'}, {id: 4, name: '第四季度'}]"
                       item-text="name"
                       item-value="id"
-                      label="选择季度"></v-select>
+                      label="选择季度"
+                      v-model="quarter"></v-select>
           </v-flex>
         </v-layout>
       </v-flex>
@@ -28,12 +30,12 @@
         <v-text-field v-model="keywords"
                       label="输入姓名或手机号查找"
                       append-icon="search"
-                      @keyup.enter="getContractList"></v-text-field>
+                      @keyup.enter="getIncomeList"></v-text-field>
       </v-flex>
       <v-flex xs1></v-flex>
     </v-layout>
     <v-data-table :headers="headers"
-                  :items="contracts"
+                  :items="incomes"
                   :loading="loading"
                   no-data-text="暂无数据"
                   hide-actions
@@ -42,7 +44,77 @@
         <td class="text-xs-center">
           <template>
             <div>
-              {{ props.item.contractno || '--' }}
+              {{ props.item.username || '--' }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.mobile || '--' }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ getLevelName(props.item.levelno) || '--' }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.orders }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.orderprice }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.prize }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.lastyearvalue }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.lostratio }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.issaleman ? '是' : '否' }}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.ismarketman ? '是' : '否'}}
+            </div>
+          </template>
+        </td>
+        <td class="text-xs-center">
+          <template>
+            <div>
+              {{ props.item.incomevalue }}
             </div>
           </template>
         </td>
@@ -55,7 +127,7 @@
               class="pageBar"
               text-xs-center
               v-show="showPagination">
-        <v-custompagination :pagination.sync="paginationContract"></v-custompagination>
+        <v-custompagination :pagination.sync="paginationIncome"></v-custompagination>
       </v-flex>
       <v-flex xs3></v-flex>
     </v-layout>
@@ -69,44 +141,35 @@ import { parseTime, getApproveFlow, getCommaMoney } from '@/utils'
 export default {
   data () {
     return {
-      contracts: [],
+      incomes: [],
       loading: true,
       headers: [
         {
           text: '姓名',
           align: 'center',
           sortable: true,
-          value: 'contractno'
+          value: 'username'
         },
-        { text: '联系电话', value: 'contractname', align: 'center', sortable: false },
-        { text: '业务员', value: 'paymenttime', align: 'center', sortable: false },
-        { text: '营销人员', value: 'paymenttime', align: 'center', sortable: false },
-        { text: '钻级', value: 'contractvalue', align: 'center', sortable: false },
-        { text: '自签站点数(个)', value: 'recommendvalue', align: 'center', sortable: false },
-        { text: '单价(元)', value: 'contractstart', align: 'center', sortable: false },
-        { text: '额外奖励(元)', value: 'contractstate', align: 'center', sortable: false },
-        { text: '上年结转额(元)', value: 'paymenttime', align: 'center', sortable: false },
-        { text: '老客户流失率', value: 'paymenttime', align: 'center', sortable: false },
-        { text: '实际结算值(元)', value: 'paymenttime', align: 'center', sortable: false },
+        { text: '联系电话', value: 'mobile', align: 'center', sortable: false },
+        { text: '钻级', value: 'levelno', align: 'center', sortable: false },
+        { text: '自签站点数(个)', value: 'orders', align: 'center', sortable: false },
+        { text: '单价(元)', value: 'orderprice', align: 'center', sortable: false },
+        { text: '额外奖励(元)', value: 'prize', align: 'center', sortable: false },
+        { text: '上年结转额(元)', value: 'lastyearvalue', align: 'center', sortable: false },
+        { text: '老客户流失率', value: 'lostratio', align: 'center', sortable: false },
+        { text: '业务员', value: 'issaleman', align: 'center', sortable: false },
+        { text: '营销人员', value: 'ismarketman', align: 'center', sortable: false },
+        { text: '结算值(元)', value: 'incomevalue', align: 'center', sortable: false }
       ],
-      prompt: {
-        dialog: false,
-        title: '提示信息',
-        ok: true
-      },
-      contractViewDialog: false,
-      contractViewDialogTitle: '合同详情',
-      curcontractid: null,
-      curcontract: null,
-      addOrEditContractDialog: 'IS_NONE',
-      addOrEditDialogTitle: '',
       showPagination: true,
-      paginationContract: {
+      paginationIncome: {
         total: 0,
         page: 1, // page 当前页
         rowsPerPage: 10
       },
       keywords: '',
+      quarter: 1,
+      year: 2019,
       snackbar: false,
       y: 'top',
       x: null,
@@ -116,24 +179,32 @@ export default {
     }
   },
   watch: {
-    'paginationContract.rowsPerPage' () {
-      this.getContractList()
+    'paginationIncome.rowsPerPage' () {
+      this.getIncomeList()
     },
-    'paginationContract.page' () {
-      this.getContractList()
+    'paginationIncome.page' () {
+      this.getIncomeList()
+    },
+    'year' () {
+      this.getIncomeList()
+    },
+    'quarter' () {
+      this.getIncomeList()
     }
   },
   methods: {
-    getContractList () {
+    getIncomeList () {
       let requestParams = Object.assign({}, {
-        page: this.paginationContract.page,
-        size: this.paginationContract.rowsPerPage,
+        page: this.paginationIncome.page,
+        size: this.paginationIncome.rowsPerPage,
+        year: this.year,
+        quarter: this.quarter
       })
       if (this.keywords) {
-        Object.assign(requestParams, { no: this.keywords.trim(), name: this.keywords.trim() })
+        Object.assign(requestParams, { mobile: this.keywords.trim(), username: this.keywords.trim() })
       }
       try {
-        excuteApis(requestParams, global.config.adminApis, 'contract', 'list').then(response => {
+        excuteApis(requestParams, global.config.adminApis, 'report', 'list').then(response => {
           if (response.status === 200) {
             let res = response.data
             if (res.errno) {
@@ -141,9 +212,9 @@ export default {
               this.loading = false
             } else {
               let result = res.data
-              this.contracts = result.data
+              this.incomes = result.data
               this.loading = false
-              this.paginationContract.total = result.count
+              this.paginationIncome.total = result.count
             }
           } else {
             this.loading = false
@@ -161,15 +232,15 @@ export default {
       }
       return parseTime(time, 'yyyy-MM-dd')
     },
-    getApproveFlowName (flowno) {
-      return getApproveFlow(flowno)
+    getLevelName (level) {
+      return global.config.level[level]
     },
     getMoney (money) {
       return getCommaMoney(money, false)
     }
   },
   created () {
-    this.getContractList()
+    this.getIncomeList()
   }
 }
 </script>

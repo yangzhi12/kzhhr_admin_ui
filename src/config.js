@@ -58,7 +58,8 @@ const config = {
     report: {
       getsubrecords: { url: '/getsubrecords', method: 'post' },
       curlevel: { url: '/curlevel', method: 'post' },
-      store: { url: '/store', method: 'post' }
+      store: { url: '/store', method: 'post' },
+      list: { url: '/index', method: 'post' }
     },
     dict: {
       index: { url: '/index', method: 'post' }

@@ -728,6 +728,7 @@ export default {
           this.$set(this.curmember, 'levelno', level.levelno)
           this.$set(this.curmember, 'leveltime', level.leveltime)
         }
+        this.showDetail('standarone')
         this.reviewLevel()
       })
     },
