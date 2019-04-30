@@ -58,6 +58,14 @@ export default new Router({
       }
     },
     {
+      path: '/notify',
+      name: 'notify',
+      component: () => import('./views/Notify.vue'),
+      meta: {
+        requireAuth: true
+      }
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login

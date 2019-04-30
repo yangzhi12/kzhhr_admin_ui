@@ -17,6 +17,8 @@
                @click="path('levelset')">钻级评定</v-btn>
         <v-btn flat
                @click="path('accounts')">收益报表</v-btn>
+        <v-btn flat
+               @click="path('notify')">通知公告</v-btn>
         <v-menu open-on-hover
                 top
                 offset-y

@@ -3,7 +3,7 @@ const baseUrl = 'http://127.0.0.1:8360'
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
   url: baseUrl,
-  ajaxUploadUrl: `${baseUrl}/admin/api/upload`,
+  ajaxUploadUrl: `${baseUrl}:2392/upload`,
   debug: {
     mock: false, // enable mock
     http: false // http request log
@@ -63,6 +63,11 @@ const config = {
     },
     dict: {
       index: { url: '/index', method: 'post' }
+    },
+    notify: {
+      add: { url: '/store', method: 'post' },
+      list: { url: '/index', method: 'post' },
+      delete: { url: '/delete', method: 'post' }
     }
   },
   level: {
