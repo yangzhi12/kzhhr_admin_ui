@@ -814,7 +814,7 @@ export default {
   },
   created () {
     this.curyear = (new Date()).getFullYear()
-    let m = (new Date()).getMonth() / 3
+    let m = Math.floor((new Date()).getMonth() / 3)
     if (!m) {
       this.curyear -= 1
       this.curquarter = 4
