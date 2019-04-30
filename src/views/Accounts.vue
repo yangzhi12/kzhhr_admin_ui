@@ -136,7 +136,7 @@
 
 <script>
 import { excuteApis } from '@/api'
-import { parseTime, getApproveFlow, getCommaMoney } from '@/utils'
+import { parseTime, getCommaMoney } from '@/utils'
 
 export default {
   data () {
