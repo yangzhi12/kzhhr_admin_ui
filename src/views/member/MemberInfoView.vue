@@ -20,8 +20,7 @@
             <v-layout row
                       wrap>
               <v-flex xs12>
-                <v-layout row
-                          mb-2>
+                <v-layout row>
                   <v-flex xs4>
                     <span class="infolabel">姓名: </span>
                     <span>{{ member.username }}</span>
@@ -51,64 +50,102 @@
                     <span>{{ getGenderName(member.gender) || '--' }}</span>
                   </v-flex>
                 </v-layout>
-              </v-flex>
-            </v-layout>
-          </div>
-        </div>
-        <div class="baseInfo">
-          <div class="baseInfoTitle">
-            <span class="titleInner"> 社交账号 </span>
-          </div>
-          <!-- <div class="baseInfoContent">
-            <v-layout row>
-              <v-flex xs1
-                      text-xs-center>
-              </v-flex>
-              <v-flex xs11>
                 <v-layout row>
                   <v-flex xs4>
-                    <span class="infolabel">微信号: </span>
-                    <span>{{ member.weixin_no }}</span>
+                    <span class="infolabel">是否是业务员: </span>
+                    <span>{{ member.issaleman ? '是' : '否' }}</span>
                   </v-flex>
                   <v-flex xs4>
-                    <span class="infolabel">昵称: </span>
-                    <span>{{ getGenderName(member.nickname) || '--' }}</span>
-                  </v-flex>
-                  <v-flex xs4>
+                    <span class="infolabel">是否是营销人员: </span>
+                    <span>{{ member.ismarketman ? '是' : '否' }}</span>
                   </v-flex>
                 </v-layout>
               </v-flex>
             </v-layout>
-          </div> -->
+          </div>
         </div>
         <div class="baseInfo">
           <div class="baseInfoTitle">
             <span class="titleInner"> 银行卡信息 </span>
           </div>
+          <div class="baseInfoContent">
+            <v-layout row
+                      wrap>
+              <v-flex xs12>
+                <v-layout row>
+                  <v-flex xs4>
+                    <span class="infolabel">卡号: </span>
+                    <span>{{ member.bankno || '--' }}</span>
+                  </v-flex>
+                  <v-flex xs8>
+                    <span class="infolabel">开户行地址: </span>
+                    <span>{{ member.bankaddress || '--' }}</span>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+          </div>
         </div>
         <div class="baseInfo">
           <div class="baseInfoTitle">
-            <span class="titleInner"> 邮箱账号 </span>
+            <span class="titleInner"> 电子邮箱信息 </span>
+          </div>
+          <div class="baseInfoContent">
+            <v-layout row
+                      wrap>
+              <v-flex xs12>
+                <v-layout row>
+                  <v-flex xs12>
+                    <span class="infolabel">账号: </span>
+                    <span>{{ member.email || '--' }}</span>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
           </div>
         </div>
         <div class="baseInfo">
           <div class="baseInfoTitle">
             <span class="titleInner"> 个人简历 </span>
           </div>
+          <div class="baseInfoContent">
+            <v-layout row
+                      wrap>
+              <v-flex xs12>{{ member.resume || '暂未填写' }}</v-flex>
+            </v-layout>
+          </div>
         </div>
         <div class="baseInfo">
           <div class="baseInfoTitle">
             <span class="titleInner"> 家庭住址 </span>
+          </div>
+          <div class="baseInfoContent">
+            <v-layout row
+                      wrap>
+              <v-flex xs12>{{ member.address || '暂未填写' }}</v-flex>
+            </v-layout>
           </div>
         </div>
         <div class="baseInfo">
           <div class="baseInfoTitle">
             <span class="titleInner"> 家庭成员 </span>
           </div>
+          <div class="baseInfoContent">
+            <v-layout row
+                      wrap>
+              <v-flex xs12>{{ member.address || '暂未填写' }}</v-flex>
+            </v-layout>
+          </div>
         </div>
         <div class="baseInfo">
           <div class="baseInfoTitle">
             <span class="titleInner"> 个人征信证明 </span>
+          </div>
+          <div class="baseInfoContent">
+            <v-layout row
+                      wrap>
+              <v-flex xs12>{{ member.resume || '暂未上传' }}</v-flex>
+            </v-layout>
           </div>
         </div>
       </div>
@@ -237,8 +274,7 @@ export default {
   margin-left: 15px;
 }
 .baseInfoContent {
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 10px;
 }
 .infolabel {
   margin-right: 10px;

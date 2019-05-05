@@ -1,7 +1,6 @@
 import { excuteApis } from '@/api'
 export function CMember(member) {
   this.id = member && member.hasOwnProperty('id') ? member.id : null
-  this.avatar = member && member.hasOwnProperty('avatar') ? member.avatar : null
   this.birthday =
     member && member.hasOwnProperty('birthday') ? member.birthday : null
   this.gender = member && member.hasOwnProperty('gender') ? member.gender : null
@@ -30,22 +29,31 @@ export function CMember(member) {
       ? member.register_time
       : null
   this.state = member && member.hasOwnProperty('state') ? member.state : null
-  this.user_level_id =
-    member && member.hasOwnProperty('user_level_id')
-      ? member.user_level_id
-      : null
   this.username =
     member && member.hasOwnProperty('username') ? member.username : null
   this.certificate =
     member && member.hasOwnProperty('certificate') ? member.certificate : null
   this.weixin_no =
     member && member.hasOwnProperty('weixin_no') ? member.weixin_no : null
-  this.weixin_openid =
-    member && member.hasOwnProperty('weixin_openid')
-      ? member.weixin_openid
-      : null
   this.address =
     member && member.hasOwnProperty('address') ? member.address : null
+  this.register_type =
+    member && member.hasOwnProperty('register_type')
+      ? member.register_type
+      : null
+  this.referee =
+    member && member.hasOwnProperty('referee') ? member.referee : null
+  this.email = member && member.hasOwnProperty('email') ? member.email : null
+  this.bankno = member && member.hasOwnProperty('bankno') ? member.bankno : null
+  this.bankaddress =
+    member && member.hasOwnProperty('bankaddress') ? member.bankaddress : null
+  this.resume = member && member.hasOwnProperty('resume') ? member.resume : null
+  this.familyinfo =
+    member && member.hasOwnProperty('familyinfo') ? member.familyinfo : null
+  this.issaleman =
+    member && member.hasOwnProperty('issaleman') ? member.issaleman : null
+  this.ismarketman =
+    member && member.hasOwnProperty('ismarketman') ? member.ismarketman : null
 }
 
 CMember.prototype.getId = function() {
@@ -160,14 +168,6 @@ CMember.prototype.setState = function(state) {
   this.state = state
 }
 
-CMember.prototype.getUser_level_id = function() {
-  return this.user_level_id
-}
-
-CMember.prototype.setUser_level_id = function(user_level_id) {
-  this.user_level_id = user_level_id
-}
-
 CMember.prototype.getUsername = function() {
   return this.username
 }
@@ -192,20 +192,84 @@ CMember.prototype.setWeixin_no = function(weixin_no) {
   this.weixin_no = weixin_no
 }
 
-CMember.prototype.getWeixin_openid = function() {
-  return this.weixin_openid
-}
-
-CMember.prototype.setWeixin_openid = function(weixin_openid) {
-  this.weixin_openid = weixin_openid
-}
-
 CMember.prototype.getAddress = function() {
   return this.address
 }
 
 CMember.prototype.setAddress = function(address) {
   this.address = address
+}
+
+CMember.prototype.getRegister_type = function () {
+  return this.register_type
+}
+
+CMember.prototype.setRegister_type = function (register_type) {
+  this.register_type = register_type
+}
+
+CMember.prototype.getReferee = function () {
+  return this.referee
+}
+
+CMember.prototype.setReferee = function (referee) {
+  this.referee = referee
+}
+
+CMember.prototype.getEmail = function () {
+  return this.email
+}
+
+CMember.prototype.setEmail = function (email) {
+  this.email = email
+}
+
+CMember.prototype.getBankno = function () {
+  return this.bankno
+}
+
+CMember.prototype.setBankno = function (bankno) {
+  this.bankno = bankno
+}
+
+CMember.prototype.getBankaddress = function () {
+  return this.bankaddress
+}
+
+CMember.prototype.setBankaddress = function (bankaddress) {
+  this.bankaddress = bankaddress
+}
+
+CMember.prototype.getResume = function () {
+  return this.resume
+}
+
+CMember.prototype.setResume = function (resume) {
+  this.resume = resume
+}
+
+CMember.prototype.getFamilyinfo = function () {
+  return this.familyinfo
+}
+
+CMember.prototype.setResume = function (familyinfo) {
+  this.familyinfo = familyinfo
+}
+
+CMember.prototype.getIssaleman = function () {
+  return this.issaleman
+}
+
+CMember.prototype.setIssaleman = function (issaleman) {
+  this.issaleman = issaleman
+}
+
+CMember.prototype.getIsmarketman = function () {
+  return this.ismarketman
+}
+
+CMember.prototype.setIsmarketman = function (ismarketman) {
+  this.ismarketman = ismarketman
 }
 
 //新增
@@ -251,6 +315,8 @@ CMember.prototype.accepted = function() {
     Object.assign(member, { id: this.getId() })
     Object.assign(member, { is_show: 1 })
     Object.assign(member, { state: this.getState().substr(0, 1) + '1' })
+    Object.assign(member, { issaleman: this.getIssaleman() })
+    Object.assign(member, { ismarketman: this.getIsmarketman() })
     return excuteApis(member, global.config.adminApis, 'user', 'save')
   } catch (error) {
     window.console.log(error)
@@ -264,6 +330,8 @@ CMember.prototype.rejected = function() {
     Object.assign(member, { id: this.getId() })
     Object.assign(member, { is_show: 1 })
     Object.assign(member, { state: this.getState().substr(0, 1) + '2' })
+    Object.assign(member, { issaleman: this.getIssaleman() })
+    Object.assign(member, { ismarketman: this.getIsmarketman() })
     return excuteApis(member, global.config.adminApis, 'user', 'save')
   } catch (error) {
     window.console.log(error)
