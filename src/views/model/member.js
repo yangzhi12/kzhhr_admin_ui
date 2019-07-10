@@ -47,13 +47,13 @@ export function CMember(member) {
   this.bankno = member && member.hasOwnProperty('bankno') ? member.bankno : null
   this.bankaddress =
     member && member.hasOwnProperty('bankaddress') ? member.bankaddress : null
-  this.resume = member && member.hasOwnProperty('resume') ? member.resume : null
-  this.familyinfo =
-    member && member.hasOwnProperty('familyinfo') ? member.familyinfo : null
   this.issaleman =
     member && member.hasOwnProperty('issaleman') ? member.issaleman : null
   this.ismarketman =
     member && member.hasOwnProperty('ismarketman') ? member.ismarketman : null
+  this.resumelist = []
+  this.creditlist = []
+  this.familyinfo = []  
 }
 
 CMember.prototype.getId = function() {
@@ -240,19 +240,27 @@ CMember.prototype.setBankaddress = function (bankaddress) {
   this.bankaddress = bankaddress
 }
 
-CMember.prototype.getResume = function () {
-  return this.resume
+CMember.prototype.getResumelist = function () {
+  return this.resumelist
 }
 
-CMember.prototype.setResume = function (resume) {
-  this.resume = resume
+CMember.prototype.setResumelist = function (resumelist) {
+  this.resumelist = resumelist
+}
+
+CMember.prototype.getCreditlist = function () {
+  return this.creditlist
+}
+
+CMember.prototype.setCreditlist = function (creditlist) {
+  this.creditlist = creditlist
 }
 
 CMember.prototype.getFamilyinfo = function () {
   return this.familyinfo
 }
 
-CMember.prototype.setResume = function (familyinfo) {
+CMember.prototype.setFamilyinfo = function (familyinfo) {
   this.familyinfo = familyinfo
 }
 

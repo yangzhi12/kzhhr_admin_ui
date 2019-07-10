@@ -70,8 +70,7 @@ new Vue({
           }
         })
         this.$store.dispatch('dictsList', {
-          industry: this['industry'],
-          transformer: this['transformer']
+          industry: this['industry']
         })
       })
     }

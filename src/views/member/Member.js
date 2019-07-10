@@ -141,12 +141,24 @@ export default {
         this.member.setBankaddress(
           resMember.hasOwnProperty('bankaddress') ? resMember.bankaddress : null
         )
-        this.member.setResume(
-          resMember.hasOwnProperty('resume') ? resMember.resume : null
-        )
-        this.member.setFamilyinfo(
-          resMember.hasOwnProperty('familyinfo') ? resMember.familyinfo : null
-        )
+        // 获取个人简历及征信证明
+        if (resMember.hasOwnProperty('userAttachmentList')) {
+          let attachments = resMember.userAttachmentList
+          console.log(attachments)
+          let resumelist = attachments.filter(item => {
+            return item.category === '000'
+          })
+          this.member.setResumelist(resumelist)
+          let creditlist = attachments.filter(item => {
+            return item.category === '010'
+          })
+          this.member.setCreditlist(creditlist)
+        }   
+        // 获取家庭成员关系
+        if (resMember.hasOwnProperty('familyList')) {
+          let familyList = resMember.familyList
+          this.member.setFamilyinfo(familyList)
+        }
         this.member.setIssaleman(
           resMember.hasOwnProperty('issaleman') ? resMember.issaleman : null
         )

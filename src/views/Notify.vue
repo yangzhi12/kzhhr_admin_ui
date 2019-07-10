@@ -196,7 +196,7 @@ export default {
   methods: {
     publishNotify () {
       if (this.$refs.form.validate()) {
-        excuteApis(this.notify, global.config.adminApis, 'notify', 'add').then(response => {
+        excuteApis(this.notify, global.config.adminApis, 'notify', 'add').then( () => {
           this.getNotifyList()
         })
       }

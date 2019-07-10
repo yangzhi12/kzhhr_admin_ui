@@ -110,9 +110,20 @@
           </div>
           <div class="baseInfoContent">
             <v-layout row
-                      wrap>
+                      wrap v-if="member.resumelist.length === 0">
               <v-flex xs12>{{ member.resume || '暂未填写' }}</v-flex>
             </v-layout>
+            <template  v-if="member.resumelist.length > 0">
+              <v-layout row
+                      wrap >
+                <v-flex xs12 pa-2 v-for="resume in member.resumelist" :key="resume.id">
+                    <v-img pa-2
+                      :src="resume.downloadurl"
+                      class="grey lighten-2"
+                    ></v-img>
+                  </v-flex>
+              </v-layout>
+            </template>
           </div>
         </div>
         <div class="baseInfo">
@@ -132,9 +143,24 @@
           </div>
           <div class="baseInfoContent">
             <v-layout row
-                      wrap>
-              <v-flex xs12>{{ member.address || '暂未填写' }}</v-flex>
+                      wrap v-if="member.familyinfo.length === 0">
+              <v-flex xs12>{{ '暂未填写' }}</v-flex>
             </v-layout>
+            <template v-if="member.familyinfo.length > 0">
+                <v-layout row wrap>
+                  <v-flex xs2>姓名</v-flex>
+                  <v-flex xs2>称谓</v-flex>
+                  <v-flex xs2>电话</v-flex>
+                  <v-flex xs6>地址</v-flex>
+                </v-layout>
+                <v-layout row
+                      wrap v-for="family in member.familyinfo" :key="family.id">
+                  <v-flex xs2>{{family.name}}</v-flex>
+                  <v-flex xs2>{{family.appellation}}</v-flex>
+                  <v-flex xs2>{{family.mobile}}</v-flex>
+                  <v-flex xs6>{{family.address}}</v-flex>
+                </v-layout>
+            </template>
           </div>
         </div>
         <div class="baseInfo">
@@ -143,9 +169,20 @@
           </div>
           <div class="baseInfoContent">
             <v-layout row
-                      wrap>
-              <v-flex xs12>{{ member.resume || '暂未上传' }}</v-flex>
+                      wrap v-if="member.creditlist.length === 0">
+              <v-flex xs12>{{ '暂未上传' }}</v-flex>
             </v-layout>
+            <template v-if="member.creditlist.length > 0">
+                <v-layout row
+                      wrap v-for="credit in member.creditlist" :key="credit.id">
+                  <v-flex xs12 pa-2>
+                    <v-img pa-2
+                      :src="credit.downloadurl"
+                      class="grey lighten-2"
+                    ></v-img>
+                  </v-flex>
+                </v-layout>
+            </template>
           </div>
         </div>
       </div>

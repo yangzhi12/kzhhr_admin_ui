@@ -1,5 +1,5 @@
-const baseUrl = 'http://127.0.0.1:8360'
-// const baseUrl = ''
+// const baseUrl = 'http://127.0.0.1:8360'
+const baseUrl = ''
 const config = {
   locale: 'zh-CN', // en-US, zh-CN
   url: baseUrl,
